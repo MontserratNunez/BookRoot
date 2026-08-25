@@ -81,7 +81,7 @@ builder.Services.AddAuthentication("Bearer")
 
 var app = builder.Build();
 
-//app.UseExceptionHandler("/Error/500");
+app.UseExceptionHandler("/Error/500");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -146,7 +146,7 @@ app.Use(async (context, next) =>
 
 app.UseStaticFiles();
 
-//app.UseStatusCodePagesWithReExecute("/Error/{0}");
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseRouting();
 
