@@ -1,0 +1,138 @@
+﻿@using Application.ViewModels.User
+@model List<UserSearchViewModel>
+@{
+    ViewData["Title"] = "Buscar Usuarios";
+    var query = ViewBag.Query as string;
+}
+
+<style>
+    .user-card-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+        .user-card-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(43, 38, 35, 0.08) !important;
+            border-color: var(--br-amber, #c87d55) !important;
+        }
+
+            .user-card-item:hover .text-amber-icon {
+                transform: translateX(3px);
+            }
+
+    .text-amber-icon {
+        transition: transform 0.2s ease;
+    }
+</style>
+
+<div class="py-4" style="max-width: 950px; margin: 0 auto;">
+
+    <div class="text-center mb-5">
+        <div class="d-inline-flex align-items-center gap-2 mb-2 text-uppercase font-weight-500 text-amber small" style="letter-spacing: 0.12em;">
+            <i class="bi bi-people"></i>
+            Comunidad Lectora
+        </div>
+        <h1 class="display-5 font-serif fw-bold mb-2" style="color: var(--br-ink);">Buscar Usuarios</h1>
+        <p class="text-muted fs-6 mb-0">Encuentra a otros lectores, explora sus perfiles y descubre sus lecturas</p>
+    </div>
+
+    <div class="p-4 rounded bg-white shadow-sm mb-5" style="border: 1px solid var(--br-border);">
+        <form method="get" asp-controller="User" asp-action="Search">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text bg-white border-end-0" style="border-color: var(--br-border);">
+                    <i class="bi bi-search text-amber"></i>
+                </span>
+                <input type="text"
+                       name="q"
+                       value="@query"
+                       class="form-control border-start-0 ps-0"
+                       placeholder="Escribe el nombre de usuario..."
+                       required
+                       style="border-color: var(--br-border); box-shadow: none;" />
+                <button type="submit" class="btn text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;">
+                    Buscar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+        </div>
+    }
+
+    @if (string.IsNullOrWhiteSpace(query))
+    {
+        <div class="p-5 text-center bg-white rounded shadow-sm mb-5" style="border: 1px solid var(--br-border);">
+            <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 70px; height: 70px; border: 1px solid var(--br-border);">
+                <i class="bi bi-person-search fs-2 text-amber"></i>
+            </div>
+            <h2 class="h5 font-serif fw-bold text-dark mb-2">Comienza a buscar miembros</h2>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 420px;">
+                Ingresa el nombre o apodo de un usuario en el buscador para conectar con la comunidad.
+            </p>
+        </div>
+    }
+    else if (Model == null || !Model.Any())
+    {
+        <div class="p-5 text-center bg-white rounded shadow-sm mb-5" style="border: 1px solid var(--br-border);">
+            <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 70px; height: 70px; border: 1px solid var(--br-border);">
+                <i class="bi bi-person-x fs-2 text-muted"></i>
+            </div>
+            <h2 class="h5 font-serif fw-bold text-dark mb-2">Sin resultados encontrados</h2>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 420px;">
+                No se encontraron usuarios que coincidan con <strong class="text-dark">"@query"</strong>. Verifica el nombre e intenta nuevamente.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-items-center justify-content-between pb-2 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+            <h2 class="h5 font-serif fw-bold text-dark mb-0">
+                Resultados para <span class="text-amber">"@query"</span>
+            </h2>
+            <span class="badge bg-light text-muted border fw-normal" style="border-color: var(--br-border) !important;">
+                @Model.Count @(Model.Count == 1 ? "usuario" : "usuarios")
+            </span>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+            @foreach (var user in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 bg-white border-0 shadow-sm p-3 position-relative rounded user-card-item" style="border: 1px solid var(--br-border) !important;">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="@(string.IsNullOrEmpty(user.AvatarUrl) ? "/images/profile-images/default-avatar.png" : user.AvatarUrl)"
+                                 alt="Avatar de @user.Username"
+                                 class="rounded-circle flex-shrink-0"
+                                 style="width: 52px; height: 52px; object-fit: cover; border: 2px solid var(--br-border);" />
+
+                            <div class="flex-grow-1 min-w-0">
+                                <h3 class="h6 font-serif fw-bold mb-0 text-truncate">
+                                    <a asp-action="Profile" asp-route-username="@user.Username" class="text-dark text-decoration-none stretched-link">
+                                        @@@user.Username
+                                    </a>
+                                </h3>
+                                <span class="text-muted small d-block text-truncate" style="font-size: 0.8rem;">Ver perfil</span>
+                            </div>
+
+                            <div class="text-muted flex-shrink-0">
+                                <i class="bi bi-chevron-right text-amber text-amber-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="text-center pt-2">
+        <a asp-controller="Home" asp-action="Index" class="btn-br-ghost">
+            <i class="bi bi-arrow-left me-2"></i> Volver al inicio
+        </a>
+    </div>
+
+</div>

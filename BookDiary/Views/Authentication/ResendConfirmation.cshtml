@@ -1,0 +1,59 @@
+@model Application.ViewModels.Auth.ResendConfirmationViewModel
+@{
+    ViewData["Title"] = "Reenviar Confirmación";
+}
+
+<div class="d-flex align-items-center justify-content-center py-5" style="min-height: calc(100vh - 120px);">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
+                
+                <div class="p-4 p-md-5 rounded shadow-sm text-center position-relative"
+                     style="background: #fdfbf7; border: 1px solid var(--br-border, #f2e9d8);">
+                    
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                         style="width: 64px; height: 64px; background: rgba(200, 125, 85, 0.12); color: var(--br-amber, #c87d55);">
+                        <i class="bi bi-envelope-paper-fill fs-3"></i>
+                    </div>
+
+                    <h1 class="h3 font-serif fw-bold text-dark mb-2">Reenviar activación</h1>
+                    <p class="text-muted small mb-4">
+                        Ingresa el correo electrónico asociado a tu cuenta para recibir un nuevo enlace de confirmación.
+                    </p>
+
+                    <form asp-action="ResendConfirmation" method="post" class="text-start">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small rounded mb-3" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Email" class="form-label text-dark fw-medium small mb-1">Correo Electrónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white text-muted border-end-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input asp-for="Email" class="form-control border-start-0 ps-0" placeholder="nombre@ejemplo.com" autocomplete="email" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small d-block mt-1"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-amber text-white fw-semibold w-100 py-2 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: var(--br-amber, #c87d55); border: none;">
+                            <span>Reenviar Enlace</span>
+                            <i class="bi bi-send-fill small"></i>
+                        </button>
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top border-secondary border-opacity-10 text-center">
+                        <a asp-action="Login" class="text-decoration-none small text-muted fw-medium d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-arrow-left"></i> Volver al inicio de sesión
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,21 @@
+﻿@using Application.ViewModels.User
+
+@model List<UserCompletedBookViewModel>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td><strong>@book.Title</strong>, @book.Author</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">Este usuario aún no ha terminado ningún libro.</p>
+}

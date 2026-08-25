@@ -1,0 +1,10 @@
+﻿@{
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        Layout = "_Layout";
+    }
+    else
+    {
+        Layout = "_LayoutAnonymous";
+    }
+}

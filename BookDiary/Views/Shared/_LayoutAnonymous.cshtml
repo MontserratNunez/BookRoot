@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — BookRoot</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BookDiary.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md py-3 fixed-top" style="background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--br-border);">
+            <div class="container">
+                <a class="navbar-brand-custom" asp-area="" asp-controller="Home" asp-action="Index">
+                    Book<span>Root</span>
+                </a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAnonymous" aria-controls="navbarAnonymous" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarAnonymous">
+                    <ul class="navbar-nav align-items-center gap-3 mt-3 mt-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase tracking-wider font-weight-500 text-dark" style="font-size: 0.85rem; letter-spacing: 0.08em;" asp-area="" asp-controller="Authentication" asp-action="Login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn-br-primary py-2 px-3" asp-area="" asp-controller="Authentication" asp-action="SignUp">Registrarse ?</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div style="padding-top: 65px;">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="py-5" style="background: var(--br-ink); color: rgba(245,240,232,0.6);">
+        <div class="container">
+            <div class="row g-4 pb-4 border-bottom border-secondary border-opacity-25">
+                <div class="col-lg-5 col-md-6">
+                    <a href="#" class="navbar-brand-custom text-white mb-3 d-block">Book<span class="text-amber">Root</span></a>
+                    <p class="small pe-lg-4" style="line-height: 1.7;">
+                        Tu diario social de lectura. Registra los libros que has leído, lleva el seguimiento de tus lecturas actuales, califica, crea listas temáticas y comparte con tu comunidad.
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <h6 class="text-uppercase text-white-50 mb-3 small tracking-widest">Plataforma</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a asp-controller="Authentication" asp-action="SignUp" class="text-white-50 text-decoration-none">Crear Cuenta</a></li>
+                        <li><a asp-controller="Authentication" asp-action="Login" class="text-white-50 text-decoration-none">Ingresar</a></li>
+                        <li><a href="#caracteristicas" class="text-white-50 text-decoration-none">Características</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-3 col-6">
+                    <h6 class="text-uppercase text-white-50 mb-3 small tracking-widest">Legales</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a asp-controller="Public" asp-action="Privacy" class="text-white-50 text-decoration-none">Política de Privacidad</a></li>
+                        <li><a asp-controller="Public" asp-action="Terms" class="text-white-50 text-decoration-none">Términos del Servicio</a></li>
+                        <li><a asp-controller="Public" asp-action="Attributions" class="text-white-50 text-decoration-none">Atribuciones</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center pt-4 small">
+                <span>&copy; 2026 BookRoot. Inspirado para apasionados de la lectura.</span>
+                <span class="mt-2 mt-sm-0">Potenciado por OpenLibrary API</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js" nonce="@Context.Items["csp-nonce"]"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" nonce="@Context.Items["csp-nonce"]"></script>
+    <script src="~/js/site.js" asp-append-version="true" nonce="@Context.Items["csp-nonce"]"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

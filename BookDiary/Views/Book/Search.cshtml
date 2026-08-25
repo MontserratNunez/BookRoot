@@ -1,0 +1,185 @@
+﻿@model List<BookInfoViewModel>
+@{
+    ViewData["Title"] = "Buscar Libros";
+    var query = ViewBag.Query as string;
+}
+
+<style>
+    
+    .br-book-css {
+        width: 60px;
+        height: 90px;
+        background: linear-gradient(135deg, var(--br-amber, #c87d55) 0%, #a45f39 100%);
+        border-radius: 2px 6px 6px 2px;
+        position: relative;
+        box-shadow: 3px 4px 10px rgba(43, 38, 35, 0.18), inset -2px 0 3px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #fcfaf7;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px 6px 8px 10px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    
+        .br-book-css::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        
+        .br-book-css .book-ribbon {
+            width: 10px;
+            height: 16px;
+            background-color: #fcfaf7;
+            position: absolute;
+            top: 0;
+            right: 8px;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+            opacity: 0.9;
+        }
+
+        
+        .br-book-css .book-line {
+            height: 2px;
+            background-color: rgba(252, 250, 247, 0.75);
+            border-radius: 1px;
+            margin-bottom: 3px;
+        }
+
+            .br-book-css .book-line.short {
+                width: 60%;
+            }
+
+       
+        .br-book-css::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 1px;
+            bottom: 2px;
+            width: 2px;
+            background: repeating-linear-gradient( to bottom, #e6ded6 0px, #e6ded6 1px, #fcfaf7 1px, #fcfaf7 3px );
+            border-radius: 0 2px 2px 0;
+        }
+</style>
+
+<div class="py-4" style="max-width: 950px; margin: 0 auto;">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 font-serif fw-bold mb-2" style="color: var(--br-ink);">Buscar Libros</h1>
+    </div>
+
+    <div class="p-4 rounded bg-white shadow-sm mb-5" style="border: 1px solid var(--br-border);">
+        <form method="get" asp-controller="Book" asp-action="Search">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0" style="border-color: var(--br-border);">
+                    <i class="bi bi-search text-amber"></i>
+                </span>
+                <input type="text"
+                       name="q"
+                       value="@query"
+                       class="form-control border-start-0 ps-0"
+                       placeholder="Buscar por título, autor o palabra clave..."
+                       required
+                       style="border-color: var(--br-border); box-shadow: none;" />
+                <button type="submit" class="btn text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;">
+                    Buscar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @if (string.IsNullOrWhiteSpace(query))
+    {
+        <div class="p-5 text-center bg-white rounded shadow-sm" style="border: 1px solid var(--br-border);">
+            <div class="d-inline-flex align-items-center justify-content-center mb-3">
+
+                <div class="br-book-css" style="width: 70px; height: 100px;">
+                    <div class="book-ribbon"></div>
+                    <div class="mt-2">
+                        <div class="book-line"></div>
+                        <div class="book-line short"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 420px;">
+                Escribe el título de una obra o el nombre de un autor en el buscador superior para explorar el catálogo.
+            </p>
+        </div>
+    }
+    else if (!Model.Any())
+    {
+        <div class="p-5 text-center bg-white rounded shadow-sm" style="border: 1px solid var(--br-border);">
+            <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 70px; height: 70px; border: 1px solid var(--br-border);">
+                <i class="bi bi-journal-x fs-2 text-muted"></i>
+            </div>
+            <h2 class="h5 font-serif fw-bold text-dark mb-2">Sin resultados encontrados</h2>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 420px;">
+                No se encontraron libros para <strong class="text-dark">"@query"</strong>. Revisa la ortografía o intenta buscar con otros términos.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-items-center justify-content-between pb-2 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+            <h2 class="h5 font-serif fw-bold text-dark mb-0">
+                Resultados para <span class="text-amber">"@query"</span>
+            </h2>
+            <span class="badge bg-light text-muted border fw-normal" style="border-color: var(--br-border) !important;">
+                @Model.Count @(Model.Count == 1 ? "resultado" : "resultados")
+            </span>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+            @foreach (var book in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 bg-white border-0 shadow-sm p-3 position-relative rounded" style="border: 1px solid var(--br-border) !important;">
+                        <div class="d-flex gap-3 align-items-start">
+
+                            <div class="br-book-css flex-shrink-0">
+                                <div class="book-ribbon"></div>
+                                <div class="mt-2">
+                                    <div class="book-line"></div>
+                                    <div class="book-line short"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1 min-w-0">
+                                <h3 class="h6 font-serif fw-bold mb-1 text-truncate">
+                                    <a asp-controller="Book"
+                                       asp-action="Details"
+                                       asp-route-bookWorkKey="@book.BookWorkKey"
+                                       asp-route-q="@query"
+                                       class="text-dark text-decoration-none stretched-link">
+                                        @book.Title
+                                    </a>
+                                </h3>
+
+                                <p class="text-muted small mb-2 text-truncate">
+                                    <i class="bi bi-person me-1 text-amber"></i>@(string.IsNullOrWhiteSpace(book.Author) ? "Autor no disponible" : book.Author)
+                                </p>
+
+                                @if (book.FirstPublishYear > 0)
+                                {
+                                    <div class="d-inline-flex align-items-center gap-1 px-2 py-1 bg-light rounded text-muted small" style="border: 1px solid var(--br-border); font-size: 0.78rem;">
+                                        <i class="bi bi-calendar3"></i>
+                                        <span>@book.FirstPublishYear</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

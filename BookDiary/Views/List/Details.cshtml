@@ -1,0 +1,229 @@
+@using Application.ViewModels.Lists
+@model ListDetailsViewModel
+@{
+    ViewData["Title"] = Model.ListName;
+}
+
+<style>
+    .book-card-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+        .book-card-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(43, 38, 35, 0.1) !important;
+            border-color: var(--br-amber, #c87d55) !important;
+        }
+
+    .btn-remove-book {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: rgba(220, 53, 69, 0.9);
+        color: #ffffff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        opacity: 0.85;
+        transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+        z-index: 10;
+    }
+
+        .btn-remove-book:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+</style>
+
+<div class="py-4" style="max-width: 950px; margin: 0 auto;">
+
+    <div class="mb-4 pb-4 border-bottom" style="border-color: var(--br-border) !important;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+            <div>
+                <h1 class="display-6 font-serif fw-bold mb-1" style="color: var(--br-ink);">@Model.ListName</h1>
+                <p class="text-muted fs-6 mb-0">
+                    Lista creada por
+                    <a asp-controller="User" asp-action="Profile" asp-route-username="@Model.OwnerUsername" class="fw-semibold text-decoration-none text-amber">
+                        @@@Model.OwnerUsername
+                    </a>
+                </p>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                @if (Model.IsOwner)
+                {
+                    <a asp-controller="Book" asp-action="Search" class="btn text-white fw-semibold px-3 py-2" style="background-color: var(--br-amber, #c87d55); border: none;">
+                        <i class="bi bi-plus-lg me-1"></i> Agregar libro
+                    </a>
+                }
+                <a asp-action="Index" asp-route-username="@Model.OwnerUsername" class="btn btn-outline-secondary fw-semibold px-3 py-2" style="border-color: var(--br-border); color: var(--br-ink);">
+                    <i class="bi bi-arrow-left me-1"></i> Volver a Listas
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ListDescription))
+    {
+        <div class="p-3 mb-4 rounded bg-light" style="border-left: 4px solid var(--br-amber, #c87d55); border-top: 1px solid var(--br-border); border-right: 1px solid var(--br-border); border-bottom: 1px solid var(--br-border);">
+            <p class="mb-0 text-secondary fst-italic" style="font-size: 0.95rem; line-height: 1.5;">
+                <i class="bi bi-quote me-1 text-amber fs-5 align-middle"></i>@Model.ListDescription
+            </p>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Books == null || !Model.Books.Any())
+    {
+        <div class="p-5 text-center bg-white rounded shadow-sm my-4" style="border: 1px solid var(--br-border);">
+            <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 70px; height: 70px; border: 1px solid var(--br-border);">
+                <i class="bi bi-book fs-2 text-muted"></i>
+            </div>
+            <h2 class="h5 font-serif fw-bold text-dark mb-2">Esta lista está vacía</h2>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 420px;">
+                @(Model.IsOwner ? "Comienza a buscar tus lecturas e inclúyelas en esta colección." : "El propietario aún no ha agregado libros a esta lista.")
+            </p>
+            @if (Model.IsOwner)
+            {
+                <div class="mt-4">
+                    <a asp-controller="Book" asp-action="Search" class="btn text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;">
+                        <i class="bi bi-search me-1"></i> Buscar libros para agregar
+                    </a>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 my-2">
+            @foreach (var book in Model.Books)
+            {
+                <div class="col">
+                    <div class="card h-100 border-0 bg-white shadow-sm position-relative rounded overflow-hidden book-card-item" style="border: 1px solid var(--br-border) !important;">
+
+                        @if (Model.IsOwner)
+                        {
+                            <form asp-action="RemoveBook" method="post" class="js-remove-book-form m-0">
+                                <input type="hidden" name="listId" value="@Model.ListId" />
+                                <input type="hidden" name="bookWorkKey" value="@book.BookWorkKey" />
+                                <button type="submit" class="btn-remove-book" title="Quitar de la lista">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </form>
+                        }
+
+                        <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@book.BookWorkKey" class="text-decoration-none text-dark d-flex flex-column h-100">
+
+                            <div class="bg-light position-relative cover-container" style="height: 210px; overflow: hidden; border-bottom: 1px solid var(--br-border);">
+                                @if (!string.IsNullOrEmpty(book.CoverUrl))
+                                {
+                                    <div class="cover-placeholder d-flex flex-column align-items-center justify-content-center h-100 text-muted p-2 text-center">
+                                        <div class="spinner-border spinner-border-sm text-amber mb-1" role="status" style="color: var(--br-amber, #c87d55);"></div>
+                                        <span style="font-size: 0.75rem;">Cargando...</span>
+                                    </div>
+
+                                    <img data-cover-url="@book.CoverUrl"
+                                         alt="@book.Title"
+                                         class="w-100 h-100 d-none book-cover-img"
+                                         style="object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted p-2 text-center" style="font-size: 0.8rem;">
+                                        <i class="bi bi-journal-text fs-3 text-amber mb-1"></i>
+                                        <span>Sin Portada</span>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="p-3 d-flex flex-column flex-grow-1">
+                                <h2 class="h6 font-serif fw-bold mb-1 text-truncate" title="@book.Title" style="font-size: 0.9rem; line-height: 1.3;">
+                                    @book.Title
+                                </h2>
+                                <p class="text-muted small mb-0 text-truncate mt-auto" title="@book.Author" style="font-size: 0.8rem;">
+                                    @book.Author
+                                </p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>
+
+<script nonce="@Context.Items["csp-nonce"]">
+    document.addEventListener("DOMContentLoaded", async function () {
+        document.body.addEventListener('submit', function (e) {
+            if (e.target.matches('.js-remove-book-form')) {
+                if (!confirm('¿Quitar libro de la lista?')) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        const coverImages = document.querySelectorAll('.book-cover-img[data-cover-url]');
+
+        for (let img of coverImages) {
+            let rawUrl = img.getAttribute('data-cover-url');
+
+            if (rawUrl) {
+                
+                let finalUrl = rawUrl;
+                if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+                    if (rawUrl.startsWith('OL')) {
+                        finalUrl = `https://covers.openlibrary.org/b/olid/${rawUrl}-M.jpg`;
+                    } else {
+                        finalUrl = `https://covers.openlibrary.org/b/id/${rawUrl}-M.jpg`;
+                    }
+                }
+
+                img.onload = function () {
+                    const container = img.closest('.cover-container');
+                    const placeholder = container.querySelector('.cover-placeholder');
+                    if (placeholder) placeholder.classList.add('d-none');
+                    img.classList.remove('d-none');
+                };
+
+                img.onerror = function () {
+                    const container = img.closest('.cover-container');
+                    container.innerHTML = `
+                        <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted p-2 text-center" style="font-size: 0.8rem;">
+                            <i class="bi bi-journal-text fs-3 text-amber mb-1"></i>
+                            <span>Sin Portada</span>
+                        </div>`;
+                };
+
+                img.src = finalUrl;
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+    });
+</script>

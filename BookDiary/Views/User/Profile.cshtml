@@ -1,0 +1,405 @@
+@using Application.ViewModels.User
+@model UserProfileViewModel
+@{
+    ViewData["Title"] = $"Perfil de @{Model.Username}";
+}
+
+<style>
+    
+    .profile-hero-card {
+        background: #ffffff;
+        border: 1px solid var(--br-border);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(43, 38, 35, 0.04);
+    }
+
+    .profile-avatar-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-avatar {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 38, 35, 0.12);
+    }
+
+    .avatar-edit-badge {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        background-color: var(--br-amber, #c87d55);
+        color: #ffffff;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #ffffff;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .avatar-edit-badge:hover {
+        transform: scale(1.1);
+        background-color: var(--br-amber-hover, #b06943);
+        color: #ffffff;
+    }
+
+    .stat-pill {
+        background-color: var(--br-cream, #fcfaf7);
+        border: 1px solid var(--br-border);
+        padding: 0.5rem 1.25rem;
+        border-radius: 50rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .top-book-card {
+        width: 130px;
+        transition: transform 0.25 ease, box-shadow 0.25s ease;
+    }
+
+    .top-book-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .top-book-cover {
+        width: 130px;
+        height: 185px;
+        border-radius: 6px;
+        overflow: hidden;
+        background-color: #f5f0eb;
+        border: 1px solid var(--br-border);
+        box-shadow: 0 4px 10px rgba(43, 38, 35, 0.1);
+    }
+
+    .achievement-card {
+        background: #ffffff;
+        border: 1px solid #f0e6d2;
+        border-left: 4px solid var(--br-amber, #c87d55);
+        border-radius: 8px;
+        padding: 0.85rem 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        box-shadow: 0 2px 8px rgba(43, 38, 35, 0.04);
+        min-width: 220px;
+    }
+</style>
+
+<div class="py-4" style="max-width: 950px; margin: 0 auto;">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="profile-hero-card p-4 p-md-5 mb-5 text-center text-md-start">
+        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+            
+            <div class="profile-avatar-wrapper flex-shrink-0">
+                <img src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "/images/profile-images/default-avatar.png" : Model.AvatarUrl)"
+                     alt="Avatar de @Model.Username"
+                     class="profile-avatar" />
+                @if (Model.IsOwner)
+                {
+                    <a asp-action="EditProfileImage" class="avatar-edit-badge" title="Editar foto de perfil">
+                        <i class="bi bi-camera-fill small"></i>
+                    </a>
+                }
+            </div>
+
+            <div class="flex-grow-1 min-w-0 w-100">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-start gap-3 mb-2">
+                    <div>
+                        <h1 class="h2 font-serif fw-bold mb-1" style="color: var(--br-ink);">@@@Model.Username</h1>
+                        @if (!string.IsNullOrWhiteSpace(Model.Bio))
+                        {
+                            <p class="text-muted mb-0 fst-italic" style="font-size: 0.95rem; line-height: 1.5;">"@Model.Bio"</p>
+                        }
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-2 mt-md-0 flex-shrink-0">
+                        @if (Model.IsOwner)
+                        {
+                            <a class="btn btn-sm btn-outline-secondary fw-semibold px-3" asp-action="Edit" style="border-color: var(--br-border); color: var(--br-ink);">
+                                <i class="bi bi-pencil me-1"></i> Editar
+                            </a>
+                            <a class="btn btn-sm btn-outline-secondary fw-semibold px-3" asp-action="Config" style="border-color: var(--br-border); color: var(--br-ink);">
+                                <i class="bi bi-gear me-1"></i> Configuración
+                            </a>
+                            <a class="btn btn-sm text-white fw-semibold px-3" asp-controller="List" asp-action="Index" asp-route-username="@Model.Username" style="background-color: var(--br-amber, #c87d55);">
+                                <i class="bi bi-collection me-1"></i> Mis Listas
+                            </a>
+                        }
+                        else
+                        {
+                            <form asp-controller="Follow" asp-action="Toggle" method="post" class="d-inline m-0">
+                                <input type="hidden" name="username" value="@Model.Username" />
+                                @if (Model.Follows)
+                                {
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary fw-semibold px-3" style="border-color: var(--br-border);">
+                                        <i class="bi bi-person-check-fill me-1 text-success"></i> Siguiendo
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-sm text-white fw-semibold px-3" style="background-color: var(--br-amber, #c87d55);">
+                                        <i class="bi bi-person-plus-fill me-1"></i> Seguir
+                                    </button>
+                                }
+                            </form>
+                            <a class="btn btn-sm btn-outline-secondary fw-semibold px-3" asp-controller="List" asp-action="Index" asp-route-username="@Model.Username" style="border-color: var(--br-border); color: var(--br-ink);">
+                                <i class="bi bi-collection me-1"></i> Ver Listas
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 mt-4">
+                    <div class="">
+                        <span class="fw-bold text-dark me-2">@Model.Followers</span>
+                        <span class="text-muted small"> Seguidores</span>
+                    </div>
+                    <div class="">
+                        <span class="fw-bold text-dark me-2">@Model.Following</span>
+                        <span class="text-muted small"> Seguidos</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 bg-white rounded shadow-sm mb-4" style="border: 1px solid var(--br-border);">
+        <div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-star-fill text-amber fs-5"></i>
+                <h2 class="h5 font-serif fw-bold mb-0 text-dark">Libros Favoritos</h2>
+            </div>
+            @if (Model.IsOwner)
+            {
+                <a class="btn btn-sm btn-outline-secondary font-weight-500 px-3" asp-action="EditTopFour" style="border-color: var(--br-border); font-size: 0.85rem;">
+                    <i class="bi bi-pencil-square me-1"></i> Editar Top 4
+                </a>
+            }
+        </div>
+
+        <div id="top-four-container" class="d-flex flex-wrap gap-4 justify-content-start align-items-start min-vh-10">
+            <div class="p-3 text-muted" id="top-four-loading">
+                <div class="spinner-border spinner-border-sm text-amber me-2" role="status"></div>
+                Cargando libros favoritos...
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 rounded shadow-sm mb-4" style="background: #fdfbf7; border: 1px solid #f2e9d8;">
+        <div class="d-flex align-items-center gap-2 pb-3 mb-2 border-bottom" style="border-color: #f2e9d8 !important;">
+            <i class="bi bi-trophy-fill text-amber fs-5"></i>
+            <h2 class="h5 font-serif fw-bold mb-0 text-dark">Logros de Lectura</h2>
+        </div>
+
+        <div id="achievements-container" class="d-flex flex-wrap gap-3">
+            <div class="p-3 text-muted">
+                <div class="spinner-border spinner-border-sm text-amber me-2" role="status"></div>
+                Cargando logros...
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.IsOwner)
+    {
+        <div class="p-4 bg-white rounded shadow-sm mb-4" style="border: 1px solid var(--br-border);">
+            <div class="d-flex align-items-center gap-2 pb-3 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+                <i class="bi bi-check2-circle text-amber fs-5"></i>
+                <h2 class="h5 font-serif fw-bold mb-0 text-dark">Libros Leídos</h2>
+            </div>
+
+            <div id="completed-books-container">
+                <div class="p-3 text-muted">
+                    <div class="spinner-border spinner-border-sm text-amber me-2" role="status"></div>
+                    Cargando historial de lecturas...
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["csp-nonce"]">
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = "@Model.Username";
+            const isOwner = @Model.IsOwner.ToString().ToLower();
+
+            if (!isOwner) {
+                cargarCompletedBooks(username);
+            }
+            
+            if (username) {
+                cargarTopFour(username);
+                cargarAchievements(username);
+            }
+
+            document.body.addEventListener('click', (e) => {
+                if (e.target.matches('.js-retry-completed-books')) {
+                    cargarCompletedBooks(e.target.getAttribute('data-username'));
+                }
+                if (e.target.matches('.js-retry-achievements')) {
+                    cargarAchievements(e.target.getAttribute('data-username'));
+                }
+                if (e.target.matches('.js-retry-top-four')) {
+                    cargarTopFour(e.target.getAttribute('data-username'));
+                }
+            });
+        });
+
+        function cargarCompletedBooks(username) {
+            const container = document.getElementById("completed-books-container");
+            container.innerHTML = `
+                <div class="p-3 text-muted">
+                    <div class="spinner-border spinner-border-sm text-amber me-2" role="status"></div>
+                    Cargando historial de lecturas...
+                </div>`;
+
+            fetch(`/User/GetCompletedBooksAsync?username=${encodeURIComponent(username)}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Error en la respuesta del servidor");
+                    return response.text();
+                })
+                .then(html => {
+                    container.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(error);
+                    container.innerHTML = `
+                        <div class="alert alert-warning d-flex align-items-center justify-content-between p-3 my-2" role="alert">
+                            <span class="small"><i class="bi bi-exclamation-circle me-2"></i>No se pudo cargar la lista de libros leídos.</span>
+                            <button class="btn btn-sm btn-outline-danger js-retry-completed-books" data-username="${username}">Reintentar</button>
+                        </div>`;
+                });
+        }
+
+                async function cargarAchievements(username) {
+            const container = document.getElementById('achievements-container');
+            try {
+                const response = await fetch(`/User/GetAchievementsJson?username=${encodeURIComponent(username)}`);
+                if (!response.ok) throw new Error("No se pudieron obtener los logros");
+
+                const logros = await response.json();
+                container.innerHTML = "";
+
+                if (!logros || logros.length === 0) {
+                    container.innerHTML = `
+                        <div class="p-3 text-muted fst-italic small">
+                            <i class="bi bi-info-circle me-1"></i> Aún no se han desbloqueado logros en este perfil.
+                        </div>`;
+                    return;
+                }
+
+                logros.forEach(logro => {
+                    const dateEarned = new Date(logro.earnedAt).toLocaleDateString();
+            
+                    const icon = logro.achievementPhotoUrl
+                        ? `<img src="${logro.achievementPhotoUrl}" style="width: 110px; height: 110px; object-fit: cover; object-position: top;" />`
+                        : `<div class="bg-light text-amber rounded-circle d-flex align-items-center justify-content-center" style="width: 90px; height: 90px; font-size: 2.2rem;"><i class="bi bi-award-fill"></i></div>`;
+
+                    const html = `
+                        <div class="achievement-item d-flex flex-column align-items-center text-center p-2" style="width: 140px;">
+                            <div class="mb-1 d-flex align-items-start justify-content-center overflow-hidden" style="height: 110px; width: 100%;">
+                                ${icon}
+                            </div>
+                            <div class="fw-bold text-dark font-serif mb-1 text-break" style="font-size: 0.85rem; line-height: 1.2;">
+                                ${logro.achievementName}
+                            </div>
+                            <div class="text-muted" style="font-size: 0.725rem;">
+                                <i class="bi bi-calendar-check me-1"></i>${dateEarned}
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = `
+                    <div class="text-danger small p-2">
+                        <i class="bi bi-exclamation-triangle me-1"></i> Error al cargar los logros del usuario.
+                        <button class="btn btn-sm btn-outline-danger py-0 px-2 ms-1 js-retry-achievements" data-username="${username}" style="font-size: 0.75rem;">Reintentar</button>
+                    </div>`;
+            }
+        }
+
+        async function cargarTopFour(username) {
+            const container = document.getElementById('top-four-container');
+            
+            try {
+                const response = await fetch(`/User/GetTopFourJson?username=${encodeURIComponent(username)}`);
+                
+                if (!response.ok) {
+                    throw new Error("No se pudo obtener el top 4");
+                }
+
+                const libros = await response.json();
+                container.innerHTML = "";
+
+                if (!libros || libros.length === 0) {
+                    container.innerHTML = `
+                        <div class="p-3 text-muted fst-italic small">
+                            <i class="bi bi-journal-album me-1"></i> Aún no se han configurado libros favoritos en este perfil.
+                        </div>`;
+                    return;
+                }
+
+                libros.forEach(libro => {
+                    const coverHtml = libro.coverUrl
+                        ? `<img src="${libro.coverUrl}" alt="${libro.title}" style="width: 100%; height: 100%; object-fit: cover;" />`
+                        : `<div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted p-2 text-center" style="font-size: 0.75rem;">
+                            <i class="bi bi-journal-text fs-3 text-amber mb-1"></i>
+                            <span>Sin Portada</span>
+                           </div>`;
+
+                    const libroHtml = `
+                        <div class="top-book-card">
+                            <a href="/Book/Details?bookWorkKey=${libro.bookWorkKey}" class="text-decoration-none text-dark d-block">
+                                <div class="top-book-cover mb-2">
+                                    ${coverHtml}
+                                </div>
+                                <span class="d-block font-serif fw-bold small text-truncate" style="line-height: 1.25;" title="${libro.title}">
+                                    ${libro.title}
+                                </span>
+                            </a>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', libroHtml);
+                });
+
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = `
+                    <div class="d-flex align-items-center gap-2 p-2">
+                        <span class="text-danger small"><i class="bi bi-exclamation-circle me-1"></i> Error al cargar los libros favoritos.</span>
+                        <button class="btn btn-sm btn-outline-danger py-0 px-2 js-retry-top-four" data-username="${username}" style="font-size: 0.75rem;">Reintentar</button>
+                    </div>
+                `;
+            }
+        }
+    </script>
+}

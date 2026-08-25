@@ -1,0 +1,374 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+
+
+
+/* Book Root */
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    
+    --br-ink: #1a1208;
+    --br-paper: #f5f0e8;
+    --br-cream: #ede6d4;
+    --br-amber: #c4813a;
+    --br-amber-light: #e8b87a;
+    --br-amber-pale: #faf3e6;
+    --br-forest: #2d4a2d;
+    --br-muted: #7a6e5f;
+    --br-border: rgba(100, 80, 40, 0.15);
+    --br-byzantine-blue: #3a3a5a;
+    --br-font-serif: 'Playfair Display', Georgia, serif;
+    --br-font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--br-paper);
+    color: var(--br-ink);
+    font-family: var(--br-font-sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-serif {
+    font-family: var(--br-font-serif);
+}
+
+.text-amber {
+    color: var(--br-amber) !important;
+}
+
+.text-muted-br {
+    color: var(--br-muted) !important;
+}
+
+.text-byzantine-blue {
+    color: var(--br-byzantine-blue) !important;
+}
+
+.bg-cream {
+    background-color: var(--br-cream) !important;
+}
+
+.bg-ink {
+    background-color: var(--br-ink) !important;
+    color: var(--br-paper) !important;
+}
+
+.bg-amber-pale {
+    background-color: var(--br-amber-pale) !important;
+}
+
+.bg-amber {
+    background-color: var(--br-amber) !important;
+}
+
+.bg-byzantine-blue {
+    background-color: var(--br-byzantine-blue) !important;
+}
+
+.bg-forest {
+    background-color: var(--br-forest) !important;
+}
+
+
+.btn-br-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--br-ink);
+    color: var(--br-paper) !important;
+    padding: 0.8rem 1.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 2px;
+    border: 1px solid var(--br-ink);
+    transition: all 0.25s ease;
+}
+
+    .btn-br-primary:hover {
+        background: var(--br-amber);
+        border-color: var(--br-amber);
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(196, 129, 58, 0.25);
+    }
+
+.btn-br-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--br-ink) !important;
+    padding: 0.8rem 1.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--br-ink);
+    border-radius: 2px;
+    transition: all 0.25s ease;
+}
+
+    .btn-br-outline:hover {
+        background: var(--br-ink);
+        color: var(--br-paper) !important;
+        transform: translateY(-2px);
+    }
+
+.btn-outline-secondary:hover {
+    background: var(--br-ink);
+    color: var(--br-paper) !important;
+}
+
+.btn-br-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--br-ink) !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--br-border);
+    padding-bottom: 2px;
+    transition: all 0.2s ease;
+}
+
+    .btn-br-ghost:hover {
+        color: var(--br-amber) !important;
+        border-color: var(--br-amber);
+    }
+
+.books-stack {
+    position: relative;
+    width: 320px;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.css-book {
+    position: absolute;
+    border-radius: 3px 7px 7px 3px;
+    box-shadow: 6px 10px 28px rgba(0,0,0,0.22), inset -3px 0 5px rgba(0,0,0,0.12);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+    .css-book:hover {
+        transform: translateY(-8px) rotate(0deg) !important;
+        box-shadow: 10px 16px 32px rgba(0,0,0,0.3);
+        z-index: 10 !important;
+    }
+
+    .css-book .spine {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 14px;
+        border-radius: 3px 0 0 3px;
+        background: rgba(0,0,0,0.18);
+        border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .css-book .cover-content {
+        position: absolute;
+        top: 25px;
+        left: 24px;
+        right: 15px;
+        bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .css-book .title {
+        font-family: var(--br-font-serif);
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.95);
+        font-weight: 700;
+        line-height: 1.25;
+    }
+
+    .css-book .author {
+        font-size: 0.68rem;
+        color: rgba(255,255,255,0.7);
+        font-style: italic;
+    }
+
+    .css-book .ornament {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.3);
+        text-align: right;
+    }
+
+/* Tarjeta de Libro Reutilizable en Toda la App */
+.br-book-card {
+    background: transparent;
+    transition: transform 0.3s ease;
+}
+
+    .br-book-card:hover {
+        transform: translateY(-6px);
+    }
+
+.br-book-wrapper {
+    position: relative;
+    height: 280px;
+    border-radius: 3px 8px 8px 3px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.15), inset -3px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+    .br-book-wrapper::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 12px;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 2;
+    }
+
+.br-book-cover {
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: rgba(255,255,255,0.95);
+    background-size: cover;
+    background-position: center;
+}
+
+/* Estilos de portadas con degradados por defecto (si no hay imagen de OpenLibrary) */
+.cover-style-1 {
+    background: linear-gradient(145deg, #2d4a2d 0%, #172a17 100%);
+}
+
+.cover-style-2 {
+    background: linear-gradient(145deg, #c4813a 0%, #7c4c19 100%);
+}
+
+.cover-style-3 {
+    background: linear-gradient(145deg, #1a1208 0%, #3a2e1d 100%);
+}
+
+.cover-style-4 {
+    background: linear-gradient(145deg, #3a3a5a 0%, #1e1e36 100%);
+}
+
+.br-book-title {
+    font-family: var(--br-font-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.br-book-author {
+    font-size: 0.8rem;
+    color: var(--br-muted);
+}
+
+/* Sistema de estrellas de calificación */
+.br-rating-stars {
+    color: var(--br-amber);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.genres-strip {
+    background: var(--br-ink);
+    color: var(--br-paper);
+    padding: 1.2rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.genres-track {
+    display: inline-flex;
+    animation: scroll-left 30s linear infinite;
+}
+
+.genre-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 2rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.65);
+    font-weight: 400;
+}
+
+.genre-tag::after {
+    content: '\25C6';
+    color: var(--br-amber);
+    font-size: 0.5rem;
+    vertical-align: middle;
+    margin-left: 0.8rem;
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Footer y Nav */
+.navbar-brand-custom {
+    font-family: var(--br-font-serif);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--br-ink);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.navbar-brand-custom:hover {
+    font-family: var(--br-font-serif);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--br-ink);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+    .navbar-brand-custom span {
+        color: var(--br-amber);
+    }

@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 200 240"
+   role="img"
+   aria-label="Insignia: Bibliófilo"
+   version="1.1"
+   id="svg64"
+   sodipodi:docname="badge-50-bibliofilo.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview64"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.2375"
+     inkscape:cx="67.799228"
+     inkscape:cy="106.71815"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg64" />
+  <title
+     id="title1">Bibliófilo</title>
+  <defs
+     id="defs8">
+    <linearGradient
+       id="ringGrad_gold"
+       x1="20%"
+       y1="0%"
+       x2="85%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#c4813a"
+         id="stop1" />
+      <stop
+         offset="40%"
+         stop-color="#e8b87a"
+         id="stop2" />
+      <stop
+         offset="70%"
+         stop-color="#f4d896"
+         id="stop3" />
+      <stop
+         offset="100%"
+         stop-color="#c4813a"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="ribbonGrad_gold"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#a8672c"
+         id="stop5" />
+      <stop
+         offset="100%"
+         stop-color="#c4813a"
+         id="stop6" />
+    </linearGradient>
+    <radialGradient
+       id="paperShade"
+       cx="42%"
+       cy="38%"
+       r="70%">
+      <stop
+         offset="0%"
+         stop-color="#f5f0e8"
+         id="stop7" />
+      <stop
+         offset="100%"
+         stop-color="#ede6d4"
+         id="stop8" />
+    </radialGradient>
+  </defs>
+  <circle
+     cx="100"
+     cy="94"
+     r="78"
+     fill="url(#ringGrad_gold)"
+     stroke="#7a4f22"
+     stroke-width="1.4"
+     id="circle8" />
+  <circle
+     cx="184.00"
+     cy="94.00"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle9" />
+  <circle
+     cx="182.97"
+     cy="107.14"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle10" />
+  <circle
+     cx="179.89"
+     cy="119.96"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle11" />
+  <circle
+     cx="174.84"
+     cy="132.14"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle12" />
+  <circle
+     cx="167.96"
+     cy="143.37"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle13" />
+  <circle
+     cx="159.40"
+     cy="153.40"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle14" />
+  <circle
+     cx="149.37"
+     cy="161.96"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle15" />
+  <circle
+     cx="50.63"
+     cy="161.96"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle23" />
+  <circle
+     cx="40.60"
+     cy="153.40"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle24" />
+  <circle
+     cx="32.04"
+     cy="143.37"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle25" />
+  <circle
+     cx="25.16"
+     cy="132.14"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle26" />
+  <circle
+     cx="20.11"
+     cy="119.96"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle27" />
+  <circle
+     cx="17.03"
+     cy="107.14"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle28" />
+  <circle
+     cx="16.00"
+     cy="94.00"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle29" />
+  <circle
+     cx="17.03"
+     cy="80.86"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle30" />
+  <circle
+     cx="20.11"
+     cy="68.04"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle31" />
+  <circle
+     cx="25.16"
+     cy="55.86"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle32" />
+  <circle
+     cx="32.04"
+     cy="44.63"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle33" />
+  <circle
+     cx="40.60"
+     cy="34.60"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle34" />
+  <circle
+     cx="50.63"
+     cy="26.04"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle35" />
+  <circle
+     cx="61.86"
+     cy="19.16"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle36" />
+  <circle
+     cx="74.04"
+     cy="14.11"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle37" />
+  <circle
+     cx="86.86"
+     cy="11.03"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle38" />
+  <circle
+     cx="100.00"
+     cy="10.00"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle39" />
+  <circle
+     cx="113.14"
+     cy="11.03"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle40" />
+  <circle
+     cx="125.96"
+     cy="14.11"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle41" />
+  <circle
+     cx="138.14"
+     cy="19.16"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle42" />
+  <circle
+     cx="149.37"
+     cy="26.04"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle43" />
+  <circle
+     cx="159.40"
+     cy="34.60"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle44" />
+  <circle
+     cx="167.96"
+     cy="44.63"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle45" />
+  <circle
+     cx="174.84"
+     cy="55.86"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle46" />
+  <circle
+     cx="179.89"
+     cy="68.04"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle47" />
+  <circle
+     cx="182.97"
+     cy="80.86"
+     r="1.7"
+     fill="#faf3e6"
+     opacity="0.9"
+     id="circle48" />
+  <circle
+     cx="100"
+     cy="94"
+     r="68"
+     fill="none"
+     stroke="#7a4f22"
+     stroke-width="0.8"
+     opacity="0.6"
+     id="circle49" />
+  <circle
+     cx="100"
+     cy="94"
+     r="66"
+     fill="url(#paperShade)"
+     stroke="#1a1208"
+     stroke-width="1"
+     id="circle50" />
+  <circle
+     cx="100"
+     cy="94"
+     r="57"
+     fill="none"
+     stroke="#1a1208"
+     stroke-width="0.6"
+     opacity="0.35"
+     id="circle51" />
+  <defs
+     id="defs51">
+    <path
+       id="stampCircle"
+       d="M 43,94 a 57,57 0 1,1 114,0" />
+  </defs>
+  <text
+     font-family="'DM Sans', sans-serif"
+     font-size="6.4px"
+     letter-spacing="3.5"
+     fill="#1a1208"
+     opacity="0.55"
+     id="text51"
+     transform="translate(0,-2)"><textPath
+       href="#stampCircle"
+       startOffset="50%"
+       text-anchor="middle"
+       id="textPath51">BOOKROOT</textPath></text>
+  <g
+     id="g54">
+    <path
+       d="M87,88              C 78,84 73,91 74,99              C 78,96 83,96 87,98 Z"
+       fill="#f5f0e8"
+       stroke="#1a1208"
+       stroke-width="0.8"
+       stroke-linejoin="round"
+       id="path51" />
+    <path
+       d="M85,89 C 79,88 76,93 77,96"
+       fill="none"
+       stroke="#1a1208"
+       stroke-width="0.5"
+       opacity="0.7"
+       id="path52" />
+    <path
+       d="M113,88              C 122,84 127,91 126,99              C 122,96 117,96 113,98 Z"
+       fill="#f5f0e8"
+       stroke="#1a1208"
+       stroke-width="0.8"
+       stroke-linejoin="round"
+       id="path53" />
+    <path
+       d="M115,89 C 121,88 124,93 123,96"
+       fill="none"
+       stroke="#1a1208"
+       stroke-width="0.5"
+       opacity="0.7"
+       id="path54" />
+  </g>
+  <g
+     transform="translate(79.6,77.0) scale(1.7)"
+     id="g59">
+    <path
+       d="M12,6 C9,4.4 5,4.5 3,5.6 L3,17.6 C5,16.5 9,16.5 12,18 Z"
+       fill="#f5f0e8"
+       stroke="#1a1208"
+       stroke-width="0.9"
+       stroke-linejoin="round"
+       id="path55" />
+    <path
+       d="M12,6 C15,4.4 19,4.5 21,5.6 L21,17.6 C19,16.5 15,16.5 12,18 Z"
+       fill="#f5f0e8"
+       stroke="#1a1208"
+       stroke-width="0.9"
+       stroke-linejoin="round"
+       id="path56" />
+    <path
+       d="M12,6.3 L12,17.7"
+       stroke="#1a1208"
+       stroke-width="0.7"
+       id="path57" />
+    <path
+       d="M5.1,9 L9.4,9.9 M5.1,12 L9.4,12.7 M5.1,15 L9.4,15.4"
+       stroke="#1a1208"
+       stroke-width="0.55"
+       stroke-linecap="round"
+       opacity="0.75"
+       id="path58" />
+    <path
+       d="M18.9,9 L14.6,9.9 M18.9,12 L14.6,12.7 M18.9,15 L14.6,15.4"
+       stroke="#1a1208"
+       stroke-width="0.55"
+       stroke-linecap="round"
+       opacity="0.75"
+       id="path59" />
+  </g>
+  <g
+     id="g63">
+    <path
+       d="M 42,140 L 54,160 L 42,168 L 60,163              L 60,143 Z"
+       fill="url(#ribbonGrad_gold)"
+       stroke="#7a4f22"
+       stroke-width="0.6"
+       id="path62" />
+    <path
+       d="M 158,140 L 146,160 L 158,168 L 140,163              L 140,143 Z"
+       fill="url(#ribbonGrad_gold)"
+       stroke="#7a4f22"
+       stroke-width="0.6"
+       id="path63" />
+    <rect
+       x="58"
+       y="140"
+       width="84"
+       height="23"
+       rx="2"
+       fill="url(#ribbonGrad_gold)"
+       stroke="#7a4f22"
+       stroke-width="0.7"
+       id="rect63" />
+    <text
+       x="100"
+       y="157.5"
+       text-anchor="middle"
+       font-family="'Playfair Display', Georgia, serif"
+       font-size="10"
+       font-weight="700"
+       fill="#f5f0e8"
+       letter-spacing="0.2"
+       id="text63">BIBLIÓFILO</text>
+  </g>
+  <path
+     d="M0,-3.4 L0.9,-1.1 3.4,-1 1.4,0.6 2,3.2 0,1.7 -2,3.2 -1.4,0.6 -3.4,-1 -0.9,-1.1 Z"
+     transform="translate(100.0,182)"
+     fill="#e8b87a"
+     stroke="#1a1208"
+     stroke-width="0.4"
+     id="path64" />
+</svg>

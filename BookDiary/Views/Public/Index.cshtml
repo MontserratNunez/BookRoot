@@ -1,0 +1,310 @@
+﻿@{
+    ViewData["Title"] = "Tu Diario Social de Lectura";
+}
+
+<section class="d-flex align-items-center position-relative py-4 py-lg-5 overflow-hidden" style="min-height: calc(100vh - 65px);">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="d-inline-flex align-items-center gap-2 mb-3 text-uppercase font-weight-500 text-amber small" style="letter-spacing: 0.12em;">
+                    <span style="width: 25px; height: 1px; background: var(--br-amber);"></span>
+                    La red social para lectores
+                </div>
+
+                <h1 class="display-3 fw-bold mb-4" style="line-height: 1.08; letter-spacing: -0.03em;">
+                    Lleva el registro de tu <br />
+                    <em class="text-amber">vida lectora</em>
+                </h1>
+
+                <p class="lead text-muted-br mb-4 pe-lg-4" style="font-size: 1.1rem; line-height: 1.8;">
+                    BookRoot te permite organizar los libros que has leído, llevar el control de tus lecturas actuales, calificarlos, crear listas temáticas personalizadas y descubrir qué están leyendo tus amigos.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 align-items-center">
+                    <a asp-controller="Authentication" asp-action="SignUp" class="btn-br-primary">
+                        Comenzar tu Diario Gratis <i class="bi bi-arrow-up-right ms-1"></i>
+                    </a>
+                    <a asp-controller="Authentication" asp-action="Login" class="btn-br-outline">
+                        Iniciar Sesión
+                    </a>
+                </div>
+
+                <div class="mt-5 pt-3 d-flex gap-4 border-top border-opacity-10 border-dark">
+                    <div>
+                        <div class="font-serif fs-3 fw-bold">100%</div>
+                        <div class="small text-muted-br text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.1em;">Enfocado en Libros</div>
+                    </div>
+                    <div>
+                        <div class="font-serif fs-3 fw-bold">1–5★</div>
+                        <div class="small text-muted-br text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.1em;">Sistema de Rating</div>
+                    </div>
+                    <div>
+                        <div class="font-serif fs-3 fw-bold">OpenLib</div>
+                        <div class="small text-muted-br text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.1em;">Catálogo Global</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="position-relative py-4" style="background: var(--br-cream); border-radius: 8px; border: 1px solid var(--br-border);">
+                    <div class="books-stack">
+
+                        <div class="css-book cover-style-1" style="width: 170px; height: 250px; top: 60px; left: 20px; transform: rotate(-7deg); z-index: 1;">
+                            <div class="spine"></div>
+                            <div class="cover-content">
+                                <div class="title">El nombre<br>del viento</div>
+                                <div class="author">P. Rothfuss</div>
+                                <div class="ornament"><i class="bi bi-bookmark-star-fill"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="css-book cover-style-2" style="width: 165px; height: 240px; top: 80px; left: 85px; transform: rotate(2deg); z-index: 2;">
+                            <div class="spine"></div>
+                            <div class="cover-content">
+                                <div class="title">Cien años<br>de soledad</div>
+                                <div class="author">G. García Márquez</div>
+                                <div class="ornament"><i class="bi bi-bookmark-star-fill"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="css-book cover-style-3" style="width: 160px; height: 230px; top: 100px; left: 155px; transform: rotate(9deg); z-index: 3;">
+                            <div class="spine"></div>
+                            <div class="cover-content">
+                                <div class="title">Crimen y<br>castigo</div>
+                                <div class="author">F. Dostoyevski</div>
+                                <div class="ornament"><i class="bi bi-bookmark-star-fill"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="position-absolute bottom-0 end-0 m-4 bg-byzantine-blue text-white p-3 rounded-circle d-flex align-items-center justify-content-center text-center shadow" style="width: 95px; height: 95px; font-size: 0.7rem; font-weight: 600; line-height: 1.2; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Tu Diario<br>Digital de<br>Lectura
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="genres-strip">
+    <div class="genres-track">
+        <span class="genre-tag">Literatura contemporánea</span>
+        <span class="genre-tag">Filosofía</span>
+        <span class="genre-tag">Ciencia ficción</span>
+        <span class="genre-tag">Historia universal</span>
+        <span class="genre-tag">Novela negra</span>
+        <span class="genre-tag">Ensayo</span>
+        <span class="genre-tag">Poesía</span>
+        <span class="genre-tag">Biografías</span>
+        <span class="genre-tag">Arte y diseño</span>
+        <span class="genre-tag">Literatura contemporánea</span>
+        <span class="genre-tag">Filosofía</span>
+        <span class="genre-tag">Ciencia ficción</span>
+        <span class="genre-tag">Historia universal</span>
+        <span class="genre-tag">Novela negra</span>
+        <span class="genre-tag">Ensayo</span>
+        <span class="genre-tag">Poesía</span>
+        <span class="genre-tag">Biografías</span>
+        <span class="genre-tag">Arte y diseño</span>
+    </div>
+</div>
+
+<section class="py-5 my-5" id="caracteristicas">
+    <div class="container py-4">
+        <div class="row align-items-end mb-5">
+            <div class="col-md-8">
+                <span class="text-amber text-uppercase small font-weight-600" style="letter-spacing: 0.14em;">Diseñado para lectores</span>
+                <h2 class="display-5 font-serif fw-bold mt-2">Todo lo que necesitas para organizar tus libros</h2>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a asp-controller="Authentication" asp-action="SignUp" class="btn-br-ghost">
+                    Empieza hoy mismo <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 rounded h-100" style="background: var(--br-cream); border: 1px solid var(--br-border);">
+                    <div class="fs-2 mb-3 text-amber"><i class="bi bi-journal-bookmark-fill"></i></div>
+                    <h3 class="font-serif h5 fw-bold mb-2">Diario Cronológico</h3>
+                    <p class="small text-muted-br mb-0">
+                        Registra cada libro terminado. La plataforma agrupa tus lecturas por año y mes para revivir tu historial.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 rounded h-100" style="background: var(--br-cream); border: 1px solid var(--br-border);">
+                    <div class="fs-2 mb-3 text-amber"><i class="bi bi-star-fill"></i></div>
+                    <h3 class="font-serif h5 fw-bold mb-2">Rating y Status</h3>
+                    <p class="small text-muted-br mb-0">
+                        Controla qué estás leyendo actualmente, cuando lo termines marcalo como completado y califícalo de 1 a 5 estrellas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 rounded h-100" style="background: var(--br-cream); border: 1px solid var(--br-border);">
+                    <div class="fs-2 mb-3 text-amber"><i class="bi bi-bookmarks-fill"></i></div>
+                    <h3 class="font-serif h5 fw-bold mb-2">Listas Personalizadas</h3>
+                    <p class="small text-muted-br mb-0">
+                        Crea hasta 10 listas temáticas con un límite de hasta 50 libros por lista.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 rounded h-100" style="background: var(--br-cream); border: 1px solid var(--br-border);">
+                    <div class="fs-2 mb-3 text-amber"><i class="bi bi-people-fill"></i></div>
+                    <h3 class="font-serif h5 fw-bold mb-2">Comunidad</h3>
+                    <p class="small text-muted-br mb-0">
+                        Sigue a otros usuarios, explora sus perfiles, consulta sus libros favoritos y descubre sus últimas actualizaciones en tu Feed.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" style="background: rgba(237, 230, 212, 0.4); border-top: 1px solid var(--br-border); border-bottom: 1px solid var(--br-border);">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <span class="text-amber text-uppercase small font-weight-600" style="letter-spacing: 0.14em;">Tendencias en BookRoot</span>
+                <h2 class="display-6 font-serif fw-bold mt-1">Libros populares</h2>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-6 col-md-3">
+                <div class="br-book-card">
+                    <div class="br-book-wrapper">
+                        <div class="br-book-cover cover-style-1">
+                            <div class="br-book-title">El nombre del viento</div>
+                            <div class="small opacity-75 font-italic">Patrick Rothfuss</div>
+                            <div class="text-end opacity-50"><i class="bi bi-bookmark-star-fill"></i></div>
+                        </div>
+                    </div>
+                    <div class="br-rating-stars mb-1">★★★★★</div>
+                    <div class="br-book-title fs-6">El nombre del viento</div>
+                    <div class="br-book-author">Patrick Rothfuss</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="br-book-card">
+                    <div class="br-book-wrapper">
+                        <div class="br-book-cover cover-style-2">
+                            <div class="br-book-title">Cien años de soledad</div>
+                            <div class="small opacity-75 font-italic">Gabriel García Márquez</div>
+                            <div class="text-end opacity-50"><i class="bi bi-bookmark-star-fill"></i></div>
+                        </div>
+                    </div>
+                    <div class="br-rating-stars mb-1">★★★★★</div>
+                    <div class="br-book-title fs-6">Cien años de soledad</div>
+                    <div class="br-book-author">G. García Márquez</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="br-book-card">
+                    <div class="br-book-wrapper">
+                        <div class="br-book-cover cover-style-4">
+                            <div class="br-book-title">Dune</div>
+                            <div class="small opacity-75 font-italic">Frank Herbert</div>
+                            <div class="text-end opacity-50"><i class="bi bi-bookmark-star-fill"></i></div>
+                        </div>
+                    </div>
+                    <div class="br-rating-stars mb-1">★★★★★</div>
+                    <div class="br-book-title fs-6">Dune</div>
+                    <div class="br-book-author">Frank Herbert</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="br-book-card">
+                    <div class="br-book-wrapper">
+                        <div class="br-book-cover cover-style-3">
+                            <div class="br-book-title">Crimen y castigo</div>
+                            <div class="small opacity-75 font-italic">Fiódor Dostoyevski</div>
+                            <div class="text-end opacity-50"><i class="bi bi-bookmark-star-fill"></i></div>
+                        </div>
+                    </div>
+                    <div class="br-rating-stars mb-1">★★★★☆</div>
+                    <div class="br-book-title fs-6">Crimen y castigo</div>
+                    <div class="br-book-author">F. Dostoyevski</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 text-white" style="background: var(--br-forest);">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="text-uppercase small font-weight-600" style="color: var(--br-amber-light); letter-spacing: 0.14em;">Lleva tus recuerdos contigo</span>
+                <h2 class="display-5 font-serif fw-bold mt-2 mb-3">
+                    Exporta tu diario en un informe <em class="fw-normal" style="color: var(--br-amber-light);">visualmente hermoso</em>
+                </h2>
+                <p class="text-white-50 leading-relaxed mb-4">
+                    BookRoot genera un reporte visual en archivo HTML descargable de todos tus libros completados (filtrables por año o mes). Además, gana insignias y logros a medida que superas tus metas de lectura.
+                </p>
+                <a asp-controller="Authentication" asp-action="SignUp" class="btn-br-primary" style="background: var(--br-paper); color: var(--br-ink) !important; border: none;">
+                    Crear mi cuenta en BookRoot <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="p-4 rounded" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
+                    <div class="d-flex align-items-center gap-3 pb-3 mb-3 border-bottom border-white border-opacity-10">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-opacity-20 text-amber p-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-trophy-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <strong class="d-block text-white">Sistema de Logros Integrado</strong>
+                            <span class="small text-white-50">Obtén insignias automáticas al alcanzar hitos de lectura.</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3 pb-3 mb-3 border-bottom border-white border-opacity-10">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-opacity-20 text-amber p-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-grid-3x3-gap-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <strong class="d-block text-white">Top 4 en Perfil</strong>
+                            <span class="small text-white-50">Destaca tus 4 libros favoritos de todos los tiempos en tu perfil.</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-opacity-20 text-amber p-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-bookshelf fs-4"></i>
+                        </div>
+                        <div>
+                            <strong class="d-block text-white">Listados de libros</strong>
+                            <span class="small text-white-50">Explora recomendaciones de la comunidad.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 text-center bg-amber-pale">
+    <div class="container py-5">
+        <span class="text-amber text-uppercase small font-weight-600" style="letter-spacing: 0.14em;">Únete a la comunidad</span>
+        <h2 class="display-5 font-serif fw-bold mt-2 mb-3">¿Listo para empezar tu diario de lectura?</h2>
+        <p class="text-muted-br max-w-lg mx-auto mb-4" style="max-width: 540px;">
+            Registra tus libros, sigue a tus amigos y descubre nuevas lecturas con el diseño limpio y enfocado que estabas buscando.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-controller="Authentication" asp-action="SignUp" class="btn-br-primary px-4 py-3">
+                Registrarme en BookRoot ahora <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</section>

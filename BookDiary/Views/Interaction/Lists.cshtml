@@ -1,0 +1,463 @@
+﻿@using Application.ViewModels.Book
+@model UserListsViewModel
+
+@{
+    ViewData["Title"] = "Mis Listas de Lectura";
+    int completedCount = Model.Completed?.Count ?? 0;
+    int readingCount = Model.Reading?.Count ?? 0;
+}
+
+<style>
+   
+    .br-book-card {
+        background: transparent;
+        transition: transform 0.3s ease;
+    }
+
+        .br-book-card:hover {
+            transform: translateY(-6px);
+        }
+
+    .br-book-wrapper {
+        position: relative;
+        height: 280px;
+        border-radius: 3px 8px 8px 3px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.15), inset -3px 0 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .br-book-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+    .br-book-cover {
+        width: 100%;
+        height: 100%;
+        padding: 1.5rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: rgba(255,255,255,0.95);
+        background-size: cover;
+        background-position: center;
+    }
+
+  
+    .br-book-wrapper.br-book-thumb {
+        width: 58px;
+        height: 84px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        border-radius: 2px 5px 5px 2px;
+        box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.2), inset -2px 0 4px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, var(--br-amber, #c87d55) 0%, #7a3e1d 100%);
+    }
+
+        .br-book-wrapper.br-book-thumb::before {
+            width: 8px; 
+        }
+
+        .br-book-wrapper.br-book-thumb .br-book-cover {
+            padding: 6px 4px 6px 12px;
+        }
+
+    .br-book-thumb-title {
+        font-family: var(--font-serif, serif);
+        font-size: 0.65rem;
+        font-weight: 700;
+        line-height: 1.1;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        word-break: break-word;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .books-nav-pills .nav-link {
+        color: var(--br-ink, #2b2623);
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid var(--br-border, #e0d8cf);
+        background-color: #ffffff;
+        transition: all 0.2s ease;
+    }
+
+        .books-nav-pills .nav-link:hover {
+            border-color: var(--br-amber, #c87d55);
+            color: var(--br-amber, #c87d55);
+        }
+
+        .books-nav-pills .nav-link.active {
+            background-color: var(--br-amber, #c87d55) !important;
+            color: #ffffff !important;
+            border-color: var(--br-amber, #c87d55) !important;
+        }
+
+    .book-list-card {
+        background-color: #ffffff;
+        border: 1px solid var(--br-border, #e0d8cf);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+        .book-list-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(43, 38, 35, 0.06);
+            border-color: var(--br-amber, #c87d55);
+        }
+
+    .custom-modal-backdrop {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(43, 38, 35, 0.5);
+        backdrop-filter: blur(4px);
+    }
+
+    .custom-modal-dialog {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ffffff;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 440px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--br-border, #e0d8cf);
+        overflow: hidden;
+    }
+
+    .star-rating .star {
+        font-size: 1.8rem;
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+        .star-rating .star:hover {
+            transform: scale(1.15);
+        }
+</style>
+
+<div class="py-4" style="max-width: 860px; margin: 0 auto;">
+
+    <div class="text-center mb-4">
+        <h1 class="display-6 font-serif fw-bold mb-2" style="color: var(--br-ink, #2b2623);">Mi Actividad de Lectura</h1>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <ul class="nav nav-pills books-nav-pills justify-content-center gap-2 mb-4" id="booksTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active d-flex align-items-center gap-2" id="completed-tab" data-bs-toggle="pill" data-bs-target="#completed-pane" type="button" role="tab" aria-controls="completed-pane" aria-selected="true">
+                <i class="bi bi-check2-circle fs-6"></i>
+                Completados
+                <span class="badge rounded-pill bg-light text-dark ms-1">@completedCount</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link d-flex align-items-center gap-2" id="reading-tab" data-bs-toggle="pill" data-bs-target="#reading-pane" type="button" role="tab" aria-controls="reading-pane" aria-selected="false">
+                <i class="bi bi-hourglass-split fs-6"></i>
+                Pendientes
+                <span class="badge rounded-pill bg-light text-dark ms-1">@readingCount</span>
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="booksTabContent">
+
+        <div class="tab-pane fade show active" id="completed-pane" role="tabpanel" aria-labelledby="completed-tab" tabindex="0">
+            @if (Model.Completed != null && Model.Completed.Count > 0)
+            {
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var read in Model.Completed)
+                    {
+                        <div class="book-list-card d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3">
+
+                            <div class="d-flex align-items-center gap-3 min-w-0">
+                                <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@read.BookKey" class="text-decoration-none">
+                                    <div class="br-book-wrapper br-book-thumb">
+                                        <div class="br-book-cover" style="background: linear-gradient(135deg, var(--br-amber, #c87d55) 0%, #7a3e1d 100%);">
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="min-w-0">
+                                    <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@read.BookKey" class="font-serif fw-bold text-dark text-decoration-none d-block text-truncate fs-5" title="@read.Title">
+                                        @read.Title
+                                    </a>
+                                    <span class="text-muted small d-block text-truncate">
+                                        por @read.Author
+                                    </span>
+
+                                    <div class="d-flex align-items-center gap-3 mt-1">
+                                        @if (read.FinishedAt != null)
+                                        {
+                                            <span class="badge bg-light text-muted border fw-normal" style="font-size: 0.75rem;">
+                                                <i class="bi bi-calendar-check me-1 text-amber"></i> @read.FinishedAt?.ToString("yyyy-MM-dd")
+                                            </span>
+                                        }
+
+                                        @if (read.Rating != null && read.Rating > 0)
+                                        {
+                                            <div class="d-inline-flex align-items-center text-warning small" title="@read.Rating de 5 estrellas">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= read.Rating)
+                                                    {
+                                                        <i class="bi bi-star-fill"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-star text-muted opacity-25"></i>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2 align-self-end align-self-sm-center flex-shrink-0">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-secondary btn-editar fw-semibold d-inline-flex align-items-center gap-1"
+                                        data-id="@read.Id"
+                                        data-title="@read.Title"
+                                        data-date="@(read.FinishedAt?.ToString("yyyy-MM-dd"))"
+                                        data-rating="@read.Rating"
+                                        style="border-color: var(--br-border, #e0d8cf); color: var(--br-ink, #2b2623);">
+                                    <i class="bi bi-pencil-square text-amber"></i>
+                                    <span>Editar</span>
+                                </button>
+
+                                <form asp-action="Delete" method="post" class="d-inline js-delete-interaction-form">
+                                    <input type="hidden" name="id" value="@read.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold d-inline-flex align-items-center gap-1" >
+                                        <i class="bi bi-trash"></i>
+                                        <span>Eliminar</span>
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="p-5 text-center bg-white rounded shadow-sm border" style="border-color: var(--br-border) !important;">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 64px; height: 64px; border: 1px solid var(--br-border);">
+                        <i class="bi bi-journal-bookmark fs-3 text-muted"></i>
+                    </div>
+                    <h2 class="h5 font-serif fw-bold text-dark mb-1">No hay libros completados</h2>
+                    <p class="text-muted small mb-0">Los libros que marques como leídos aparecerán listados aquí.</p>
+                </div>
+            }
+        </div>
+
+        <div class="tab-pane fade" id="reading-pane" role="tabpanel" aria-labelledby="reading-tab" tabindex="0">
+            @if (Model.Reading != null && Model.Reading.Count > 0)
+            {
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var read in Model.Reading)
+                    {
+                        <div class="book-list-card d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3">
+
+                            <div class="d-flex align-items-center gap-3 min-w-0">
+                                <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@read.BookKey" class="text-decoration-none">
+                                    <div class="br-book-wrapper br-book-thumb">
+                                        <div class="br-book-cover" style="background: linear-gradient(135deg, #4a6fa5 0%, #2b436e 100%);">
+
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="min-w-0">
+                                    <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@read.BookKey" class="font-serif fw-bold text-dark text-decoration-none d-block text-truncate fs-5" title="@read.Title">
+                                        @read.Title
+                                    </a>
+                                    <span class="text-muted small d-block text-truncate">
+                                        por @read.Author
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2 align-self-end align-self-sm-center flex-shrink-0">
+                                <form asp-action="MarkAsReaded" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@read.Id" />
+                                    <button type="submit" class="btn btn-sm text-white fw-semibold d-inline-flex align-items-center gap-1" style="background-color: var(--br-amber, #c87d55); border: none;">
+                                        <i class="bi bi-check2-circle"></i>
+                                        <span>Marcar Completado</span>
+                                    </button>
+                                </form>
+
+                                <form asp-action="Delete" method="post" class="d-inline js-delete-interaction-form">
+                                    <input type="hidden" name="id" value="@read.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold d-inline-flex align-items-center gap-1" >
+                                        <i class="bi bi-trash"></i>
+                                        <span>Eliminar</span>
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="p-5 text-center bg-white rounded shadow-sm border" style="border-color: var(--br-border) !important;">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 64px; height: 64px; border: 1px solid var(--br-border);">
+                        <i class="bi bi-bookmark-plus fs-3 text-muted"></i>
+                    </div>
+                    <h2 class="h5 font-serif fw-bold text-dark mb-1">No hay libros pendientes</h2>
+                    <p class="text-muted small mb-0">Agrega lecturas a tu lista para darles seguimiento cuando comiences a leerlas.</p>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<div id="editarModal" class="custom-modal-backdrop">
+    <div class="custom-modal-dialog">
+        <div class="p-4 border-bottom d-flex align-items-center justify-content-between bg-light" style="border-color: var(--br-border) !important;">
+            <div>
+                <h2 class="h5 font-serif fw-bold mb-0 text-dark" id="editarModalLabel">Editar datos de lectura</h2>
+                <p id="modalBookTitle" class="small fw-semibold text-amber mb-0 mt-1"></p>
+            </div>
+            <button type="button" class="btn-close js-close-modal" aria-label="Close"></button>
+        </div>
+
+        <form asp-action="EditReaded" method="post">
+            <div class="p-4">
+                <input type="hidden" id="modalInteractionId" name="Id" />
+
+                <div class="mb-3">
+                    <label for="modalFinishedAt" class="form-label fw-semibold small text-dark mb-1">
+                        <i class="bi bi-calendar-event me-1 text-amber"></i> Fecha de finalización
+                    </label>
+                    <input type="date" id="modalFinishedAt" name="Date" class="form-control" style="border-color: var(--br-border, #e0d8cf);" />
+                </div>
+
+                <div>
+                    <label class="form-label fw-semibold small text-dark mb-1">
+                        <i class="bi bi-star me-1 text-amber"></i> Calificación
+                    </label>
+
+                    <input type="hidden" id="modalRating" name="Rating" value="0" />
+
+                    <div class="star-rating d-flex gap-2 justify-content-center py-2 bg-light rounded border" style="border-color: var(--br-border, #e0d8cf) !important;">
+                        <span class="star js-star" data-value="1">★</span>
+                        <span class="star js-star" data-value="2">★</span>
+                        <span class="star js-star" data-value="3">★</span>
+                        <span class="star js-star" data-value="4">★</span>
+                        <span class="star js-star" data-value="5">★</span>
+                    </div>
+                    <span class="form-text text-muted small d-block text-center mt-1">Haz clic para asignar o quitar estrellas</span>
+                </div>
+            </div>
+
+            <div class="p-3 bg-light border-top d-flex justify-content-end gap-2" style="border-color: var(--br-border) !important;">
+                <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold px-3 js-close-modal" style="border-color: var(--br-border);">Cancelar</button>
+                <button type="submit" class="btn text-white btn-sm fw-semibold px-3" style="background-color: var(--br-amber, #c87d55); border: none;">
+                    <i class="bi bi-check2 me-1"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["csp-nonce"]">
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById('editarModal');
+            const modalInteractionId = document.getElementById('modalInteractionId');
+            const modalBookTitle = document.getElementById('modalBookTitle');
+            const modalFinishedAt = document.getElementById('modalFinishedAt');
+            const modalRatingInput = document.getElementById('modalRating');
+            const stars = document.querySelectorAll('#editarModal .js-star');
+
+            document.querySelectorAll('.btn-editar').forEach(button => {
+                button.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    const title = this.getAttribute('data-title');
+                    const date = this.getAttribute('data-date');
+                    const rating = parseInt(this.getAttribute('data-rating')) || 0;
+
+                    if (modalInteractionId) modalInteractionId.value = id;
+                    if (modalBookTitle) modalBookTitle.textContent = "Libro: " + title;
+                    if (modalFinishedAt) modalFinishedAt.value = date || "";
+
+                    renderStars(rating);
+                    if (modal) modal.style.display = 'block';
+                });
+            });
+
+            document.querySelectorAll('.js-close-modal').forEach(button => {
+                button.addEventListener('click', cerrarModal);
+            });
+
+            if (modal) {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) cerrarModal();
+                });
+            }
+
+            function cerrarModal() {
+                if (modal) modal.style.display = 'none';
+            }
+
+            stars.forEach(star => {
+                star.addEventListener('click', function () {
+                    const starValue = parseInt(this.getAttribute('data-value')) || 0;
+                    const currentRating = parseInt(modalRatingInput.value) || 0;
+                    const newRating = (starValue === currentRating) ? 0 : starValue;
+                    
+                    renderStars(newRating);
+                });
+            });
+
+            function renderStars(ratingValue) {
+                if (modalRatingInput) modalRatingInput.value = ratingValue;
+                stars.forEach(star => {
+                    const starValue = parseInt(star.getAttribute('data-value')) || 0;
+                    star.style.color = starValue <= ratingValue ? '#ffc107' : '#e0d8cf';
+                });
+            }
+        });
+    </script>
+}

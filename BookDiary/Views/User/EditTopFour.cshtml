@@ -1,0 +1,475 @@
+﻿@using Application.ViewModels.User
+@model TopFourViewModel
+@{
+    ViewData["Title"] = "Editar Top 4 Favoritos";
+}
+
+<style>
+    .top4-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+    }
+
+    @@media (max-width: 768px) {
+        .top4-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .top4-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .top4-slot {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .top4-slot-number {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--br-ink, #2b2623);
+        opacity: 0.5;
+    }
+
+    .top4-cover-card {
+        width: 100%;
+        aspect-ratio: 2/3;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #f5f0eb;
+        border: 2px dashed var(--br-border, #e0d8cf);
+        position: relative;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .top4-cover-card.has-book {
+        border-style: solid;
+        border-color: var(--br-border, #e0d8cf);
+        box-shadow: 0 4px 12px rgba(43, 38, 35, 0.1);
+    }
+
+    .top4-cover-card.has-book:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(43, 38, 35, 0.15);
+    }
+
+    .top4-cover-card.empty-slot {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--br-ink, #2b2623);
+        opacity: 0.55;
+        transition: all 0.2s ease;
+    }
+
+    .top4-cover-card.empty-slot:hover {
+        border-color: var(--br-amber, #c87d55);
+        opacity: 1;
+        background-color: #fdf8f3;
+        transform: translateY(-2px);
+    }
+
+    .top4-cover-card.empty-slot:hover .plus-icon {
+        color: var(--br-amber, #c87d55);
+    }
+
+    .top4-cover-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .btn-remove-book {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #dc3545;
+        color: white;
+        border: 2px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(220, 53, 69, 0.4);
+        opacity: 0;
+        z-index: 10;
+    }
+
+    .top4-cover-card.has-book:hover .btn-remove-book {
+        opacity: 1;
+    }
+
+    .reorder-btns {
+        display: flex;
+        gap: 4px;
+        justify-content: center;
+    }
+
+    .btn-reorder {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #f3efe9;
+        color: var(--br-ink, #2b2623);
+        border: 1px solid var(--br-border, #e0d8cf);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-reorder:hover:not(:disabled) {
+        background-color: var(--br-amber, #c87d55);
+        color: white;
+        border-color: var(--br-amber, #c87d55);
+    }
+
+    .btn-reorder:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+
+    .slot-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-align: center;
+        color: var(--br-ink, #2b2623);
+        line-height: 1.2;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    #confirmDeleteModal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(26, 18, 8, 0.6);
+    }
+
+    .modal-inner {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%; max-width: 400px;
+        background: #fdfbf7;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--br-border, #e0d8cf);
+        box-shadow: 0 20px 60px rgba(26, 18, 8, 0.2);
+    }
+</style>
+
+<div class="py-4" style="max-width: 720px; margin: 0 auto;">
+
+    <div class="text-center mb-5">
+        <h1 class="display-6 font-serif fw-bold mb-2" style="color: var(--br-ink);">Editar mis Favoritos</h1>
+        <p class="text-muted fs-6 mb-0">Selecciona tus 4 lecturas imprescindibles para exhibir en tu perfil.</p>
+        <p class="text-muted small mt-1">Haz clic en un slot vacío para buscar un libro, o en la <span class="text-danger fw-semibold">X</span> para eliminarlo.</p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form id="topFourForm" asp-action="EditTopFour" method="post">
+        <input type="hidden" id="hiddenKey1" name="BookKey1" value="@Model.BookKey1" />
+        <input type="hidden" id="hiddenKey2" name="BookKey2" value="@Model.BookKey2" />
+        <input type="hidden" id="hiddenKey3" name="BookKey3" value="@Model.BookKey3" />
+        <input type="hidden" id="hiddenKey4" name="BookKey4" value="@Model.BookKey4" />
+
+        <div class="top4-grid mb-5" id="slotsGrid">
+
+            @{
+                var slots = new[]
+                {
+                    new { Number = 1, Key = Model.BookKey1, Cover = Model.BookCover1, Title = Model.BookTitle1 },
+                    new { Number = 2, Key = Model.BookKey2, Cover = Model.BookCover2, Title = Model.BookTitle2 },
+                    new { Number = 3, Key = Model.BookKey3, Cover = Model.BookCover3, Title = Model.BookTitle3 },
+                    new { Number = 4, Key = Model.BookKey4, Cover = Model.BookCover4, Title = Model.BookTitle4 },
+                };
+
+                string[] badgeIcons = { "bi-trophy-fill text-warning", "bi-award-fill text-secondary", "bi-award-fill", "bi-bookmark-star-fill text-amber" };
+            }
+
+            @for (int i = 0; i < 4; i++)
+            {
+                var slot = slots[i];
+                bool hasBook = !string.IsNullOrEmpty(slot.Key);
+                <div class="top4-slot" id="slot-@(i+1)" data-slot="@(i+1)">
+                    
+                    <div class="d-flex align-items-center gap-1">
+                        <i class="bi @badgeIcons[i] small"></i>
+                        <span class="top4-slot-number">Posición #@slot.Number</span>
+                    </div>
+
+                    @if (hasBook)
+                    {
+                        <div class="top4-cover-card has-book" data-slot="@(i+1)">
+                            @if (!string.IsNullOrEmpty(slot.Cover))
+                            {
+                                <img src="@slot.Cover" alt="Portada @slot.Number" class="top4-cover-img" />
+                            }
+                            else
+                            {
+                                <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted p-2 text-center">
+                                    <i class="bi bi-journal-text fs-3 text-amber mb-1"></i>
+                                    <span style="font-size: 0.7rem;">Sin portada</span>
+                                </div>
+                            }
+                            <button type="button"
+                                    class="btn-remove-book"
+                                    class="btn-remove-book js-ask-delete" data-slot="@(i+1)" data-key="@slot.Key"
+                                    title="Eliminar de favoritos">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <div class="slot-title">@(string.IsNullOrEmpty(slot.Title) ? slot.Key : slot.Title)</div>
+                    }
+                    else
+                    {
+                        <a href="/Book/Search" class="top4-cover-card empty-slot" title="Buscar libro para agregar">
+                            <i class="bi bi-plus-lg fs-3 plus-icon" style="transition: color 0.2s;"></i>
+                            <span style="font-size: 0.78rem; font-weight: 600;">Agregar libro</span>
+                        </a>
+                        <div class="slot-title text-muted" style="opacity: 0.4; font-style: italic; font-size: 0.7rem;">Vacío</div>
+                    }
+
+                    @if (hasBook)
+                    {
+                        <div class="reorder-btns">
+                            <button type="button"
+                                    
+                                    class="btn-reorder js-move-left" data-slot="@(i+1)"
+                                    title="Mover a la izquierda"
+                                    @(i == 0 ? "disabled" : "")>
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <button type="button"
+                                    
+                                    class="btn-reorder js-move-right" data-slot="@(i+1)"
+                                    title="Mover a la derecha"
+                                    @(i == 3 ? "disabled" : "")>
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end gap-2 pt-3 border-top" style="border-color: var(--br-border) !important;">
+            <a asp-controller="User" asp-action="Profile" class="btn btn-outline-secondary fw-semibold px-4" style="border-color: var(--br-border); color: var(--br-ink);">
+                <i class="bi bi-x-circle me-1"></i> Cancelar
+            </a>
+            <button type="submit" class="btn text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;">
+                <i class="bi bi-check2 me-1"></i> Guardar Cambios
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<div id="confirmDeleteModal">
+    <div class="modal-inner">
+        <div class="pt-4 px-4 pb-3" style="border-bottom: 1px solid var(--br-border);">
+            <h5 class="font-serif fw-bold mb-1" style="color: var(--br-ink);">
+                <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Eliminar de favoritos
+            </h5>
+            <p class="text-muted small mb-0">¿Estás seguro de que quieres quitar este libro de tus favoritos?</p>
+        </div>
+        <div class="p-3 d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary fw-semibold px-3 js-close-confirm" class="btn btn-outline-secondary fw-semibold px-3" style="border-color: var(--br-border);">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn-danger fw-semibold px-3 js-confirm-delete" class="btn btn-danger fw-semibold px-3">
+                <i class="bi bi-trash me-1"></i> Eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script nonce="@Context.Items["csp-nonce"]">
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('click', (e) => {
+            const askDeleteBtn = e.target.closest('.js-ask-delete');
+            if (askDeleteBtn) {
+                pedirConfirmacionEliminar(parseInt(askDeleteBtn.getAttribute('data-slot')), askDeleteBtn.getAttribute('data-key'));
+            }
+
+            const moveLeftBtn = e.target.closest('.js-move-left');
+            if (moveLeftBtn && !moveLeftBtn.disabled) {
+                moverIzquierda(parseInt(moveLeftBtn.getAttribute('data-slot')));
+            }
+
+            const moveRightBtn = e.target.closest('.js-move-right');
+            if (moveRightBtn && !moveRightBtn.disabled) {
+                moverDerecha(parseInt(moveRightBtn.getAttribute('data-slot')));
+            }
+
+            if (e.target.closest('.js-close-confirm')) {
+                cerrarConfirmacion();
+            }
+
+            if (e.target.closest('.js-confirm-delete')) {
+                confirmarEliminar();
+            }
+        });
+    });
+    const slotData = [
+        { key: @Json.Serialize(Model.BookKey1 ?? ""), cover: @Json.Serialize(Model.BookCover1 ?? ""), title: @Json.Serialize(Model.BookTitle1 ?? "") },
+        { key: @Json.Serialize(Model.BookKey2 ?? ""), cover: @Json.Serialize(Model.BookCover2 ?? ""), title: @Json.Serialize(Model.BookTitle2 ?? "") },
+        { key: @Json.Serialize(Model.BookKey3 ?? ""), cover: @Json.Serialize(Model.BookCover3 ?? ""), title: @Json.Serialize(Model.BookTitle3 ?? "") },
+        { key: @Json.Serialize(Model.BookKey4 ?? ""), cover: @Json.Serialize(Model.BookCover4 ?? ""), title: @Json.Serialize(Model.BookTitle4 ?? "") },
+    ];
+
+    let pendingDeleteSlot = null;
+
+    function pedirConfirmacionEliminar(slotNum, bookKey) {
+        pendingDeleteSlot = slotNum - 1;
+        document.getElementById('confirmDeleteModal').style.display = 'block';
+    }
+
+    function cerrarConfirmacion() {
+        pendingDeleteSlot = null;
+        document.getElementById('confirmDeleteModal').style.display = 'none';
+    }
+
+    function confirmarEliminar() {
+        if (pendingDeleteSlot === null) return;
+        slotData[pendingDeleteSlot] = { key: '', cover: '', title: '' };
+        sincronizarHiddenInputs();
+        cerrarConfirmacion();
+        reRenderSlots();
+    }
+
+    function moverIzquierda(slotNum) {
+        const idx = slotNum - 1;
+        if (idx <= 0) return;
+        const tmp = slotData[idx];
+        slotData[idx] = slotData[idx - 1];
+        slotData[idx - 1] = tmp;
+        sincronizarHiddenInputs();
+        reRenderSlots();
+    }
+
+    function moverDerecha(slotNum) {
+        const idx = slotNum - 1;
+        if (idx >= 3) return;
+        const tmp = slotData[idx];
+        slotData[idx] = slotData[idx + 1];
+        slotData[idx + 1] = tmp;
+        sincronizarHiddenInputs();
+        reRenderSlots();
+    }
+
+    function sincronizarHiddenInputs() {
+        for (let i = 0; i < 4; i++) {
+            document.getElementById(`hiddenKey${i + 1}`).value = slotData[i].key;
+        }
+    }
+
+    const badgeIcons = [
+        'bi-trophy-fill text-warning',
+        'bi-award-fill text-secondary',
+        'bi-award-fill',
+        'bi-bookmark-star-fill text-amber'
+    ];
+    const positionLabels = ['#1', '#2', '#3', '#4'];
+
+    function reRenderSlots() {
+        for (let i = 0; i < 4; i++) {
+            const slot = document.getElementById(`slot-${i + 1}`);
+            const data = slotData[i];
+            const hasBook = data.key !== '';
+
+            let html = `
+                <div class="d-flex align-items-center gap-1">
+                    <i class="bi ${badgeIcons[i]} small"></i>
+                    <span class="top4-slot-number">Posición ${positionLabels[i]}</span>
+                </div>`;
+
+            if (hasBook) {
+                const imgHtml = data.cover
+                    ? `<img src="${data.cover}" alt="Portada" class="top4-cover-img" />`
+                    : `<div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted p-2 text-center"><i class="bi bi-journal-text fs-3 text-amber mb-1"></i><span style="font-size: 0.7rem;">Sin portada</span></div>`;
+
+                html += `
+                <div class="top4-cover-card has-book" data-slot="${i + 1}">
+                    ${imgHtml}
+                    <button type="button" class="btn-remove-book"
+                        class="btn-remove-book js-ask-delete" data-slot="${i + 1}" data-key="${data.key}"
+                        title="Eliminar de favoritos">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="slot-title">${data.title || data.key}</div>
+                <div class="reorder-btns">
+                    <button type="button"  class="btn-reorder js-move-left" data-slot="${i + 1}" title="Mover a la izquierda" ${i === 0 ? 'disabled' : ''}>
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
+                    <button type="button"  class="btn-reorder js-move-right" data-slot="${i + 1}" title="Mover a la derecha" ${i === 3 ? 'disabled' : ''}>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>`;
+            } else {
+                html += `
+                <a href="/Book/Search" class="top4-cover-card empty-slot" title="Buscar libro para agregar">
+                    <i class="bi bi-plus-lg fs-3 plus-icon" style="transition: color 0.2s;"></i>
+                    <span style="font-size: 0.78rem; font-weight: 600;">Agregar libro</span>
+                </a>
+                <div class="slot-title text-muted" style="opacity: 0.4; font-style: italic; font-size: 0.7rem;">Vacío</div>`;
+            }
+
+            slot.innerHTML = html;
+        }
+    }
+
+    document.getElementById('confirmDeleteModal').addEventListener('click', function(e) {
+        if (e.target === this) cerrarConfirmacion();
+    });
+</script>
+}
+
+

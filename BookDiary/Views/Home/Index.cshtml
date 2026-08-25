@@ -1,0 +1,319 @@
+@model Application.ViewModels.Home.HomeViewModel
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="py-4" style="max-width: 950px; margin: 0 auto;">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 font-serif fw-bold mb-2" style="color: var(--br-ink);">BookRoot</h1>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="p-4 rounded bg-white shadow-sm mb-5" style="border: 1px solid var(--br-border);">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-search text-amber fs-5"></i>
+            <h2 class="h6 font-serif fw-bold mb-0 text-dark">Buscar en la plataforma</h2>
+        </div>
+        <form method="get" id="searchForm" action="/Book/Search">
+            <div class="input-group">
+                <select name="type" id="searchType" class="form-select bg-light text-dark fw-medium" style="max-width: 140px; border-color: var(--br-border);">
+                    <option value="books">Libros</option>
+                    <option value="users">Usuarios</option>
+                </select>
+                <input type="text" name="q" class="form-control" placeholder="Escribe el nombre del libro o usuario..." required style="border-color: var(--br-border);" />
+                <button type="submit" class="btn btn-amber text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;">
+                    <i class="bi bi-search me-1"></i> Buscar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mb-5">
+        <div class="d-flex align-items-center justify-content-between pb-2 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+            <h2 class="h4 font-serif fw-bold mb-0 text-dark">Más leídos del mes</h2>
+
+            @if (Model.MostReadBooks.Any())
+            {
+                <div class="d-flex gap-2">
+                    <button type="button"
+                            class="btn btn-sm btn-br-outline rounded-circle p-0 d-flex align-items-center justify-content-center"
+                            style="width: 36px; height: 36px;"
+                            id="btnPrevMostRead"
+                            title="Anterior">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-br-outline rounded-circle p-0 d-flex align-items-center justify-content-center"
+                            style="width: 36px; height: 36px;"
+                            id="btnNextMostRead"
+                            title="Siguiente">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            }
+        </div>
+
+        @if (!Model.MostReadBooks.Any())
+        {
+            <div class="p-4 text-center rounded bg-cream border text-muted" style="border-color: var(--br-border) !important;">
+                <i class="bi bi-journal-x fs-2 text-muted-br d-block mb-2"></i>
+                <p class="mb-0 fst-italic">No hay suficientes datos de lectura registrados.</p>
+            </div>
+        }
+        else
+        {
+            var popularBooks = Model.MostReadBooks.Take(10).ToList();
+
+            <div class="position-relative w-100 overflow-hidden">
+                <div id="mostReadSlider"
+                     class="d-flex flex-nowrap gap-3 pb-3 scrollbar-hidden w-100"
+                     style="overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+                    @foreach (var libro in popularBooks)
+                    {
+                        <div class="book-slider-item">
+                            <div class="br-book-card h-100 d-flex flex-column">
+
+                                <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@libro.BookWorkKey" class="text-decoration-none d-block mb-3">
+                                    <div class="br-book-wrapper shadow-sm mx-auto position-relative overflow-hidden" style="height: 220px; width: 100%; border-radius: 6px;">
+
+                                       
+                                        <div class="br-book-cover cover-style-1 d-flex flex-column justify-content-between p-3 h-100 position-absolute w-100 top-0 start-0">
+                                            <span class="badge bg-amber-pale text-amber border border-warning rounded-pill align-self-start" style="font-size: 0.6rem;">BookRoot</span>
+                                            <p class="br-book-title text-white mb-0 text-truncate" style="font-size: 0.85rem;">@libro.Title</p>
+                                            <div class="text-end opacity-50 small">?</div>
+                                        </div>
+
+                                        @if (!string.IsNullOrEmpty(libro.CoverUrl))
+                                        {
+                                            <img data-cover-url="@libro.CoverUrl"
+                                                 alt="@libro.Title"
+                                                 class="lazy-cover-img w-100 h-100 position-relative"
+                                                 style="object-fit: cover; opacity: 0; transition: opacity 0.5s ease-in-out; display: none;" />
+                                        }
+                                    </div>
+                                </a>
+
+                                <div class="text-start mt-auto">
+                                    <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@libro.BookWorkKey"
+                                       class="font-serif fw-bold text-dark text-decoration-none d-block text-truncate mb-1"
+                                       style="font-size: 0.95rem;"
+                                       title="@libro.Title">
+                                        @libro.Title
+                                    </a>
+
+                                    <span class="d-block text-muted-br small text-truncate mb-1">
+                                        @libro.Author
+                                    </span>
+
+                                    @if (!string.IsNullOrEmpty(libro.DisplayRating))
+                                    {
+                                        <div class="d-flex align-items-center gap-1 text-amber small fw-semibold">
+                                            <span>@libro.DisplayRating</span>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mb-4">
+        <div class="d-flex align-items-center gap-2 pb-2 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+            <h2 class="h4 font-serif fw-bold mb-0 text-dark">Actividad de seguidos</h2>
+        </div>
+
+        @if (!Model.FriendsActivity.Any())
+        {
+            <div class="p-4 text-center rounded bg-white border text-muted" style="border-color: var(--br-border) !important;">
+                <i class="bi bi-chat-left-dots fs-2 text-muted d-block mb-2"></i>
+                <p class="mb-0 fst-italic">Tus seguidos no han completado lecturas en el último mes.</p>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-column gap-3">
+                @foreach (var actividad in Model.FriendsActivity)
+                {
+                    <div class="p-3 bg-white rounded shadow-sm" style="border: 1px solid var(--br-border);">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <img src="@actividad.FriendProfilePicture" alt="@actividad.FriendUsername" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover; border: 1px solid var(--br-border);" />
+                            <div>
+                                <a asp-controller="User" asp-action="Profile" asp-route-username="@actividad.FriendUsername" class="text-dark fw-bold text-decoration-none small">
+                                    @@@actividad.FriendUsername
+                                </a>
+                                <span class="text-muted d-block" style="font-size: 0.75rem;">
+                                    <i class="bi bi-clock me-1"></i>@actividad.TimeAgo
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded bg-light border-start border-3" style="border-left-color: var(--br-amber, #c87d55) !important;">
+                            <div class="text-dark fs-6 mb-1">
+                                Leyó <a asp-controller="Book" asp-action="Details" asp-route-bookWorkKey="@actividad.BookWorkKey" class="text-amber fw-bold text-decoration-none font-serif">@actividad.BookTitle</a>
+                            </div>
+
+                            @if (actividad.StarsRating != "sin estrellas")
+                            {
+                                <div class="text-warning small fw-bold mt-1">
+                                    Calificación: @actividad.StarsRating
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-muted small fst-italic mt-1">
+                                    Sin calificación de estrellas
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+</div>
+
+<style>
+    
+    .scrollbar-hidden::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hidden {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+   
+    .book-slider-item {
+        flex: 0 0 calc((100% - 4rem) / 5);
+        max-width: calc((100% - 4rem) / 5);
+        box-sizing: border-box;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .book-slider-item {
+            flex: 0 0 calc((100% - 3rem) / 4);
+            max-width: calc((100% - 3rem) / 4);
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .book-slider-item {
+            flex: 0 0 calc((100% - 2rem) / 3);
+            max-width: calc((100% - 2rem) / 3);
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .book-slider-item {
+            flex: 0 0 calc((100% - 1rem) / 2);
+            max-width: calc((100% - 1rem) / 2);
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .book-slider-item {
+            flex: 0 0 75%;
+            max-width: 75%;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script nonce="@Context.Items["csp-nonce"]">
+
+        async function loadCoversSequentially() {
+            const lazyImages = document.querySelectorAll('img.lazy-cover-img[data-cover-url]');
+
+            for (let i = 0; i < lazyImages.length; i++) {
+                const img = lazyImages[i];
+                const coverUrl = img.getAttribute('data-cover-url');
+
+                if (coverUrl) {
+                    if (i > 0) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+
+                    img.style.display = 'block';
+                    img.src = coverUrl;
+
+                    img.onload = () => {
+                        img.style.opacity = '1';
+                    };
+
+                    img.onerror = () => {
+                        img.style.display = 'none';
+                    };
+                }
+            }
+        }
+
+        function scrollMostRead(direction) {
+            const slider = document.getElementById('mostReadSlider');
+            if (!slider) return;
+
+            const item = slider.querySelector('.book-slider-item');
+            if (item) {
+                const gap = 16; 
+                const scrollAmount = (item.offsetWidth + gap) * 2; 
+                
+                slider.scrollBy({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function updateAction() {
+            var type = document.getElementById("searchType");
+            var form = document.getElementById("searchForm");
+            if (type && form) {
+                form.action = type.value === "users" ? "/User/Search" : "/Book/Search";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const searchType = document.getElementById('searchType');
+            if (searchType) {
+                searchType.addEventListener('change', updateAction);
+            }
+
+            const btnPrev = document.getElementById('btnPrevMostRead');
+            if (btnPrev) {
+                btnPrev.addEventListener('click', () => scrollMostRead(-1));
+            }
+
+            const btnNext = document.getElementById('btnNextMostRead');
+            if (btnNext) {
+                btnNext.addEventListener('click', () => scrollMostRead(1));
+            }
+
+            updateAction();
+            loadCoversSequentially();
+        });
+    </script>
+}

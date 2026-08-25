@@ -1,0 +1,114 @@
+@using Application.ViewModels.Lists
+@model CreateListViewModel
+
+@{
+    ViewData["Title"] = "Crear nueva lista";
+}
+
+<style>
+    .br-create-card {
+        background-color: #ffffff;
+        border: 1px solid var(--br-border, #e0d8cf);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(43, 38, 35, 0.05);
+    }
+
+    .br-form-control {
+        border: 1px solid var(--br-border, #e0d8cf);
+        border-radius: 8px;
+        padding: 0.65rem 0.9rem;
+        color: var(--br-ink, #2b2623);
+        background-color: #fdfbf7;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+        .br-form-control:focus {
+            background-color: #ffffff;
+            border-color: var(--br-amber, #c87d55);
+            box-shadow: 0 0 0 0.25rem rgba(200, 125, 85, 0.15);
+            outline: none;
+        }
+
+    .br-btn-primary {
+        background-color: var(--br-amber, #c87d55);
+        border: none;
+        color: #ffffff;
+        border-radius: 8px;
+        padding: 0.6rem 1.4rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+        .br-btn-primary:hover {
+            background-color: #b56c45;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(200, 125, 85, 0.25);
+        }
+
+    .br-btn-secondary {
+        border: 1px solid var(--br-border, #e0d8cf);
+        color: var(--br-ink, #2b2623);
+        background-color: transparent;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+        .br-btn-secondary:hover {
+            background-color: #f5efe9;
+            border-color: var(--br-amber, #c87d55);
+            color: var(--br-amber, #c87d55);
+        }
+</style>
+
+<div class="py-4" style="max-width: 580px; margin: 0 auto;">
+
+    <div class="text-center mb-4">
+        <h1 class="display-6 font-serif fw-bold mb-2" style="color: var(--br-ink, #2b2623);">Crear nueva lista</h1>
+    </div>
+
+    <div class="br-create-card p-4 p-sm-5">
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 mb-3 small" role="alert"></div>
+
+            <div class="mb-4">
+                <label asp-for="ListName" class="form-label fw-semibold small text-dark mb-1">
+                    <i class="bi bi-bookmark-star me-1 text-amber"></i> Nombre de la lista
+                    <span class="text-danger">*</span>
+                </label>
+                <input asp-for="ListName" class="form-control br-form-control" placeholder="Ej: Clásicos de Ciencia Ficción, Lecturas de Verano..." />
+                <span asp-validation-for="ListName" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="ListDescription" class="form-label fw-semibold small text-dark mb-1">
+                    <i class="bi bi-card-text me-1 text-amber"></i> Descripción <span class="text-muted fw-normal">(opcional)</span>
+                </label>
+                <textarea asp-for="ListDescription" class="form-control br-form-control" rows="4" placeholder="Añade contexto o explica la temática de esta selección de libros..."></textarea>
+                <span asp-validation-for="ListDescription" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-end gap-2 pt-2 border-top" style="border-color: var(--br-border, #e0d8cf) !important;">
+                <a asp-action="Index" asp-route-username="@User.Identity.Name" class="btn br-btn-secondary d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-x-lg"></i>
+                    <span>Cancelar</span>
+                </a>
+                <button type="submit" class="btn br-btn-primary d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>Crear Lista</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

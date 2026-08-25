@@ -1,0 +1,154 @@
+﻿@using Application.ViewModels.User
+@model ProfileImageViewModel
+@{
+    ViewData["Title"] = "Cambiar Avatar de Perfil";
+}
+
+<style>
+    .avatar-card-item {
+        border: 2px solid var(--br-border, #e0d8cf);
+        border-radius: 12px;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        background-color: #ffffff;
+    }
+
+        .avatar-card-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--br-amber, #c87d55);
+            box-shadow: 0 6px 16px rgba(43, 38, 35, 0.08);
+        }
+
+        .avatar-card-item.selected {
+            border-color: var(--br-amber, #c87d55) !important;
+            background-color: #fdfaf7 !important;
+            box-shadow: 0 0 0 3px rgba(200, 125, 85, 0.25) !important;
+        }
+
+    .avatar-check-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: var(--br-amber, #c87d55);
+        color: #ffffff;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+    }
+
+    .avatar-card-item.selected .avatar-check-badge {
+        display: flex;
+    }
+
+    .current-avatar-img {
+        width: 105px;
+        height: 105px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid var(--br-amber, #c87d55);
+        box-shadow: 0 4px 12px rgba(43, 38, 35, 0.12);
+    }
+</style>
+
+<div class="py-4" style="max-width: 850px; margin: 0 auto;">
+
+    <div class="text-center mb-4">
+        <h1 class="display-6 font-serif fw-bold mb-2" style="color: var(--br-ink);">Selecciona tu Avatar</h1>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="bg-white p-4 rounded shadow-sm mb-5 text-center" style="border: 1px solid var(--br-border);">
+        <span class="d-block text-uppercase fw-bold text-muted mb-3" style="letter-spacing: 0.08em; font-size: 0.8rem;">Avatar Actual</span>
+        <div class="d-inline-block position-relative">
+            <img src="@(string.IsNullOrEmpty(Model.CurrentAvatarUrl) ? "/images/profile-images/default-avatar.png" : Model.CurrentAvatarUrl)"
+                 alt="Avatar Actual"
+                 class="current-avatar-img" />
+        </div>
+    </div>
+
+    <form asp-action="EditProfileImage" method="post" id="avatarForm">
+        <input type="hidden" id="selectedAvatar" name="selectedAvatar" required />
+
+        <div class="d-flex align-items-center justify-content-between pb-2 mb-4 border-bottom" style="border-color: var(--br-border) !important;">
+            <h2 class="h5 font-serif fw-bold text-dark mb-0">Opciones Disponibles</h2>
+            <span class="text-muted small">Haz clic para seleccionar</span>
+        </div>
+
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3 mb-5">
+            @foreach (var avatarName in Model.AvailableAvatars)
+            {
+                <div class="col">
+                    <div 
+                         class="avatar-option avatar-card-item js-avatar-option p-3 text-center position-relative h-100 d-flex flex-column align-items-center justify-content-center" data-avatar="@avatarName"
+                         style="cursor: pointer;">
+
+                        <div class="avatar-check-badge">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+
+                        <img src="/images/profile-images/@avatarName"
+                             alt="@avatarName"
+                             class="rounded-circle mb-2"
+                             style="width: 72px; height: 72px; object-fit: cover; border: 1px solid var(--br-border);" />
+
+                        <span class="text-dark small fw-semibold text-truncate w-100 d-block" style="font-size: 0.8rem;">
+                            @avatarName.Replace(".png", "").Replace("-", " ")
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end gap-2 pt-3 border-top" style="border-color: var(--br-border) !important;">
+            <a asp-controller="User" asp-action="Profile" class="btn btn-outline-secondary fw-semibold px-4" style="border-color: var(--br-border); color: var(--br-ink);">
+                <i class="bi bi-x-circle me-1"></i> Volver atrás
+            </a>
+            <button type="submit" id="btnSubmitAvatar" class="btn text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;" disabled>
+                <i class="bi bi-check2 me-1"></i> Guardar Avatar
+            </button>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["csp-nonce"]">
+        function selectAvatar(avatarName, element) {
+            
+            document.getElementById('selectedAvatar').value = avatarName;
+
+            
+            document.querySelectorAll('.avatar-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            element.classList.add('selected');
+
+            const submitBtn = document.getElementById('btnSubmitAvatar');
+            if (submitBtn) {
+                submitBtn.removeAttribute('disabled');
+            }
+        }
+    </script>
+}
+

@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = ViewBag.Title ?? "Ocurrió un error";
+    Layout = "_Layout";
+}
+
+<div class="d-flex align-items-center justify-content-center py-5" style="min-height: 70vh;">
+    <div class="text-center p-4 p-md-5 position-relative">
+        
+        @if (ViewBag.Code != null)
+        {
+            <div class="mb-2">
+                <span class="display-2 font-serif fw-bold" style="color: var(--br-amber, #c87d55); line-height: 1;">@ViewBag.Code</span>
+            </div>
+        }
+
+        <div class="mb-4">
+            <h1 class="h4 font-serif fw-bold text-dark mb-2">@(ViewBag.Title ?? "Ha ocurrido un error inesperado")</h1>
+            <p class="text-muted small mb-0">
+                @(ViewBag.Text ?? "Tuvimos un problema al procesar tu solicitud. Por favor, intenta de nuevo o regresa más tarde.")
+            </p>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center gap-2">
+            <a asp-controller="Public" asp-action="Index" class="btn btn-amber text-white fw-semibold px-4 py-2 shadow-sm" style="background-color: var(--br-amber, #c87d55); border: none;">
+                <i class="bi bi-house-door-fill me-1"></i> Volver al inicio
+            </a>
+            <button class="js-btn-back btn btn-outline-secondary fw-semibold px-3 py-2">
+                <i class="bi bi-arrow-left me-1"></i> Regresar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["csp-nonce"]">
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnBack = document.querySelector('.js-btn-back');
+            if (btnBack) {
+                btnBack.addEventListener('click', () => {
+                    history.back();
+                });
+            }
+        });
+    </script>
+}

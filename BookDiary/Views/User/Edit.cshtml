@@ -1,0 +1,111 @@
+@using Application.ViewModels.User
+@model EditProfileViewModel
+@{
+    ViewData["Title"] = "Editar Perfil";
+}
+
+<style>
+    .edit-profile-card {
+        background-color: #ffffff;
+        border: 1px solid var(--br-border);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(43, 38, 35, 0.04);
+    }
+
+    .form-control:focus {
+        border-color: var(--br-amber, #c87d55);
+        box-shadow: 0 0 0 0.25rem rgba(200, 125, 85, 0.15);
+    }
+</style>
+
+<div class="py-4" style="max-width: 650px; margin: 0 auto;">
+
+    <div class="text-center mb-4">
+        <h1 class="display-6 font-serif fw-bold mb-2" style="color: var(--br-ink);">Editar Datos de Perfil</h1>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-check-circle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert" style="border-radius: 8px;">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div>@TempData["Error"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4 shadow-sm" role="alert" style="border-radius: 8px; display: none;"></div>
+
+    <div class="edit-profile-card p-4 p-md-5 mb-4">
+        <form asp-action="Edit" method="post">
+
+            <div class="mb-4">
+                <label asp-for="Username" class="form-label font-serif fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-at text-amber"></i>
+                    Nombre de usuario
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light text-muted border-end-0" style="border-color: var(--br-border);">@@</span>
+                    <input asp-for="Username"
+                           type="text"
+                           class="form-control border-start-0 ps-1"
+                           placeholder="tu_nombre_usuario"
+                           style="border-color: var(--br-border);" />
+                </div>
+                <div class="form-text text-muted small mt-1">
+                    Este es tu identificador único en la comunidad.
+                </div>
+                <span asp-validation-for="Username" class="text-danger small mt-1 d-block fw-semibold"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Bio" class="form-label font-serif fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-card-text text-amber"></i>
+                    Biografía <span class="text-muted fw-normal small">(Opcional)</span>
+                </label>
+                <textarea asp-for="Bio"
+                          rows="4"
+                          class="form-control"
+                          placeholder="Cuéntanos un poco sobre tus géneros, autores o hábitos de lectura favoritos..."
+                          style="border-color: var(--br-border); resize: vertical;"></textarea>
+                <div class="form-text text-muted small mt-1">
+                    Una breve descripción que aparecerá públicamente en tu perfil.
+                </div>
+                <span asp-validation-for="Bio" class="text-danger small mt-1 d-block fw-semibold"></span>
+            </div>
+
+            <hr class="my-4" style="border-color: var(--br-border);" />
+
+            <div class="d-flex align-items-center justify-content-end gap-2">
+                <a asp-controller="User" asp-action="Profile" class="btn btn-outline-secondary fw-semibold px-4" style="border-color: var(--br-border); color: var(--br-ink);">
+                    <i class="bi bi-x-circle me-1"></i> Volver atrás
+                </a>
+                <button type="submit" class="btn text-white fw-semibold px-4" style="background-color: var(--br-amber, #c87d55); border: none;">
+                    <i class="bi bi-check2 me-1"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script nonce="@Context.Items["csp-nonce"]">
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const summary = document.querySelector("[asp-validation-summary]");
+            if (summary && summary.querySelectorAll("li").length > 0) {
+                summary.style.display = "block";
+            }
+        });
+    </script>
+}

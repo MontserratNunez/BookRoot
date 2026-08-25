@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookRoot</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BookDiary.styles.css" asp-append-version="true" />
+
+    <style>
+        :root {
+            --br-cream: #fcfaf7;
+            --br-amber: #c87d55;
+            --br-amber-hover: #b06943;
+            --br-ink: #2b2623;
+            --br-border: #e6ded6;
+            --br-muted: #786f68;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--br-cream);
+            color: var(--br-ink);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        .text-amber {
+            color: var(--br-amber) !important;
+        }
+
+        .bg-amber {
+            background-color: var(--br-amber) !important;
+        }
+
+        .navbar-br {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--br-border);
+            box-shadow: 0 2px 12px rgba(43, 38, 35, 0.03);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .navbar-br .navbar-brand {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--br-ink);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-br .navbar-brand:hover {
+            color: var(--br-amber);
+        }
+
+        .navbar-br .nav-link{
+            color: var(--br-ink) !important;
+            font-weight: 500;
+            font-size: 0.925rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-br .nav-link:hover {
+            color: var(--br-amber) !important;
+            background-color: rgba(200, 125, 85, 0.08);
+        }
+
+        .navbar-br .navbar-toggler {
+            border-color: var(--br-border);
+            color: white !important;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .navbar-br .navbar-toggler .navbar-toggler-icon {
+            
+            color: black !important;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .footer-br {
+            background-color: #ffffff;
+            border-top: 1px solid var(--br-border);
+            color: var(--br-muted);
+            font-size: 0.875rem;
+            margin-top: auto;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .footer-br a {
+            color: var(--br-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-br a:hover {
+            color: var(--br-amber);
+        }
+
+        .btn-br-ghost {
+            color: var(--br-ink);
+            border: 1px solid var(--br-border);
+            background: #ffffff;
+            font-weight: 500;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-br-ghost:hover {
+            border-color: var(--br-amber);
+            color: var(--br-amber);
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-light navbar-br mb-4">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-journal-bookmark-fill text-amber fs-3"></i>
+                    <span>BookRoot</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMainContent" aria-controls="navbarMainContent"
+                        aria-expanded="false" aria-label="Navegación de palanca">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMainContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door text-amber"></i> Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Book" asp-action="Search">
+                                <i class="bi bi-search text-amber"></i> Buscar Libros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Interaction" asp-action="Lists">
+                                <i class="bi bi-book text-amber"></i> Mis Libros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="List" asp-action="Index" asp-route-username="">
+                                <i class="bi bi-collection text-amber"></i> Mis Listas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Profile" asp-route-username="">
+                                <i class="bi bi-person text-amber"></i> Mi Perfil
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Journal" asp-action="Index">
+                                <i class="bi bi-journal-text text-amber"></i> Diario
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link bg-transparent border-0 w-100 text-start" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="bi bi-box-arrow-right text-amber"></i> Cerrar Sesión
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container flex-grow-1">
+        <main role="main" class="pb-4">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title font-serif fw-bold fs-4 text-ink" id="logoutModalLabel">Cerrar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body py-3">
+                    <p class="mb-0 text-muted">¿Estás seguro de que deseas salir de tu cuenta en <strong>BookRoot</strong>?</p>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-br-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <form asp-controller="Authentication" asp-action="LogOut" method="post" class="d-inline">
+                        <button type="submit" class="btn bg-amber text-white fw-semibold px-3">
+                            Sí, cerrar sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-br">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-check text-amber"></i>
+                    <span>&copy; 2026 <strong>BookRoot</strong>. Todos los derechos reservados.</span>
+                </div>
+                <div class="d-flex align-items-center gap-3 text-uppercase font-weight-500" style="font-size: 0.8rem; letter-spacing: 0.05em;">
+                    <a asp-area="" asp-controller="Public" asp-action="Privacy">Privacidad</a>
+                    <span class="text-muted">•</span>
+                    <a asp-area="" asp-controller="Public" asp-action="Terms">Términos</a>
+                    <span class="text-muted">•</span>
+                    <a asp-area="" asp-controller="Public" asp-action="Attributions">Atribuciones</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js" nonce="@Context.Items["csp-nonce"]"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" nonce="@Context.Items["csp-nonce"]"></script>
+    <script src="~/js/site.js" asp-append-version="true" nonce="@Context.Items["csp-nonce"]"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
